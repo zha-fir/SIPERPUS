@@ -7,28 +7,65 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LaporanController;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+// Public Home Route
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Kunjungan (Buku Tamu)
-Route::get('/kunjungan', [KunjunganController::class, 'index'])->name('kunjungan.index');
-Route::post('/kunjungan/scan', [KunjunganController::class, 'storeScan'])->name('kunjungan.storeScan');
-Route::post('/kunjungan/umum', [KunjunganController::class, 'storeUmum'])->name('kunjungan.storeUmum');
+// Temporary route to setup admin if seeder failed
+Route::get('/setup-admin', function () {
+    $user = \App\Models\User::firstOrNew(['email' => 'admin@siperpus.com']);
+    $user->name = 'Administrator';
+    // Using Hash::make manually to ensure it works correctly regardless of cast bugs
+    $user->password = \Illuminate\Support\Facades\Hash::make('password');
+    $user->save();
+    
+    return 'Akun admin berhasil dibuat paksa. Silakan ke <a href="/login">Halaman Login</a> dan gunakan email: admin@siperpus.com, password: password';
+});
 
-// Master Data Anggota
-Route::get('/anggota', [AnggotaController::class, 'index'])->name('anggota.index');
-Route::post('/anggota', [AnggotaController::class, 'store'])->name('anggota.store');
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
-// Master Data Buku
-Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
-Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Transaksi Peminjaman
-Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
-Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create');
-Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+// Protected Admin Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Transaksi Pengembalian
-Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
-Route::get('/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
-Route::post('/pengembalian', [PengembalianController::class, 'store'])->name('pengembalian.store');
+    // Kunjungan (Buku Tamu)
+    Route::get('/kunjungan', [KunjunganController::class, 'index'])->name('kunjungan.index');
+    Route::post('/kunjungan/scan', [KunjunganController::class, 'storeScan'])->name('kunjungan.storeScan');
+    Route::post('/kunjungan/umum', [KunjunganController::class, 'storeUmum'])->name('kunjungan.storeUmum');
+
+    // Master Data Anggota
+    Route::get('/anggota', [AnggotaController::class, 'index'])->name('anggota.index');
+    Route::post('/anggota', [AnggotaController::class, 'store'])->name('anggota.store');
+    Route::get('/anggota/{id}', [AnggotaController::class, 'show'])->name('anggota.show');
+
+    // Master Data Buku
+    Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+    Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
+
+    // Transaksi Peminjaman
+    Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
+    Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create');
+    Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+    
+    // API Cek Barcode (Peminjaman POS)
+    Route::get('/api/anggota/cek', [PeminjamanController::class, 'cekAnggota'])->name('api.anggota.cek');
+    Route::get('/api/buku/cek', [PeminjamanController::class, 'cekBuku'])->name('api.buku.cek');
+    Route::get('/api/anggota/pinjaman-aktif', [PengembalianController::class, 'pinjamanAktif'])->name('api.anggota.pinjaman-aktif');
+
+    // Transaksi Pengembalian
+    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+    Route::get('/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
+    Route::post('/pengembalian', [PengembalianController::class, 'store'])->name('pengembalian.store');
+
+    // Laporan
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+});

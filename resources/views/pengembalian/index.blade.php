@@ -1,15 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Pengembalian Buku')
-@section('page_title', 'Data Pengembalian')
+@section('title', 'Transaksi Pengembalian')
+@section('page_title', 'Transaksi Pengembalian')
 
 @section('content')
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-    <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-        <div>
-            <h3 class="text-lg font-bold text-slate-800">Riwayat Pengembalian</h3>
-            <p class="text-sm text-slate-500">Transkrip pengembalian buku dan kalkulasi denda.</p>
-        </div>
+    <div class="p-6 border-b border-slate-100 flex items-center justify-end bg-slate-50/50">
         <a href="{{ route('pengembalian.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-md shadow-emerald-600/30 flex items-center gap-2 transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
             Proses Pengembalian Baru
@@ -35,7 +31,7 @@
                     </td>
                     <td class="p-4">
                         <div class="font-bold text-slate-800">Trx #{{ str_pad($p->id_peminjaman, 4, '0', STR_PAD_LEFT) }}</div>
-                        <div class="text-sm text-slate-600 mt-1">{{ optional($p->peminjaman->anggota)->nama }} ({{ optional($p->peminjaman->anggota)->kelas }})</div>
+                        <div class="text-sm text-slate-600 mt-1">{{ optional($p->peminjaman->anggota)->nama_lengkap ?? '-' }} <span class="text-xs">({{ optional($p->peminjaman->anggota)->kelas_atau_jabatan ?? '-' }})</span></div>
                     </td>
                     <td class="p-4">
                         @if($p->status == 'tepat_waktu')

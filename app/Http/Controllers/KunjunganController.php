@@ -31,7 +31,7 @@ class KunjunganController extends Controller
                 'tanggal_kunjungan' => Carbon::now('Asia/Makassar')->format('Y-m-d'),
                 'jam_masuk' => Carbon::now('Asia/Makassar')->format('H:i:s'),
             ]);
-            return redirect()->back()->with('success', 'Selamat datang, ' . $anggota->nama);
+            return redirect()->back()->with('success', 'Selamat datang, ' . $anggota->nama_lengkap);
         }
 
         return redirect()->back()->with('error', 'Barcode anggota tidak ditemukan.');

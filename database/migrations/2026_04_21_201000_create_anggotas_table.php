@@ -10,12 +10,21 @@ return new class extends Migration
     {
         Schema::create('anggota', function (Blueprint $table) {
             $table->id('id_anggota');
-            $table->string('nis')->unique();
-            $table->string('nama');
-            $table->string('kelas');
-            $table->enum('status', ['aktif', 'tidak_aktif', 'ditangguhkan'])->default('aktif');
-            $table->string('barcode')->unique();
+            $table->enum('tipe_anggota', ['Siswa', 'Guru', 'Staf'])->default('Siswa');
+            $table->string('nomor_identitas')->unique()->comment('NIS untuk Siswa, NIP untuk Guru/Staf');
+            $table->string('nama_lengkap');
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('kelas_atau_jabatan')->nullable();
+            $table->text('alamat')->nullable();
+            $table->string('no_telepon')->nullable();
+            $table->string('email')->nullable();
+            $table->string('foto_profil')->nullable();
             $table->date('tanggal_daftar');
+            $table->date('tanggal_kadaluarsa')->nullable();
+            $table->enum('status_anggota', ['aktif', 'tidak_aktif', 'lulus', 'diblokir'])->default('aktif');
+            $table->string('barcode')->unique();
             $table->timestamps();
         });
     }

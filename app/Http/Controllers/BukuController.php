@@ -9,18 +9,19 @@ class BukuController extends Controller
 {
     public function index()
     {
-        $bukus = Buku::all();
+        $bukus = Buku::latest()->get();
         return view('buku.index', compact('bukus'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required',
+            'judul_buku' => 'required',
             'penulis' => 'required',
             'penerbit' => 'required',
             'tahun_terbit' => 'required|numeric',
-            'kategori' => 'required',
+            'klasifikasi_ddc' => 'nullable',
+            'lokasi_rak' => 'nullable',
             'jumlah_total' => 'required|numeric|min:1'
         ]);
 
@@ -28,15 +29,20 @@ class BukuController extends Controller
 
         Buku::create([
             'kode_buku' => 'BK-' . $newIdNumber . '-' . rand(100, 999),
-            'judul' => $request->judul,
+            'isbn_issn' => $request->isbn_issn,
+            'judul_buku' => $request->judul_buku,
+            'edisi' => $request->edisi,
             'penulis' => $request->penulis,
             'penerbit' => $request->penerbit,
             'tahun_terbit' => $request->tahun_terbit,
-            'kategori' => $request->kategori,
+            'tempat_terbit' => $request->tempat_terbit,
+            'klasifikasi_ddc' => $request->klasifikasi_ddc,
+            'deskripsi_fisik' => $request->deskripsi_fisik,
+            'lokasi_rak' => $request->lokasi_rak,
             'jumlah_total' => $request->jumlah_total,
             'jumlah_tersedia' => $request->jumlah_total
         ]);
 
-        return redirect()->back()->with('success', 'Buku berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Buku bibliografi berhasil ditambahkan.');
     }
 }
