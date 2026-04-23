@@ -100,7 +100,7 @@
                         </td>
                         <td class="p-4">
                             @if($k->tipe == 'anggota')
-                                <span class="font-mono text-xs bg-indigo-50 text-indigo-700 border border-indigo-100 px-2.5 py-1 rounded-lg font-bold">
+                                <span class="font-mono text-xs bg-orange-50 text-orange-700 border border-orange-100 px-2.5 py-1 rounded-lg font-bold">
                                     {{ $k->anggota->barcode ?? '-' }}
                                 </span>
                             @else

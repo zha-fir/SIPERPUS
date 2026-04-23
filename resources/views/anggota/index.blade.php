@@ -27,6 +27,14 @@
 
         <!-- Action Button -->
         <div class="flex items-center gap-2">
+            <button onclick="togglePrintMode()" class="hidden sm:inline-flex bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2.5 rounded-xl text-sm font-medium shadow-sm transition-all items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Mode Cetak
+            </button>
+            <button onclick="cetakTerpilih()" id="btnCetakTerpilih" class="hidden bg-orange-50 border border-orange-100 hover:bg-orange-100 text-orange-700 px-3 py-2 rounded-xl text-sm font-bold shadow-sm transition-all items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                Cetak Terpilih
+            </button>
             <span id="countBadge" class="hidden sm:inline-flex px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full border border-slate-200">{{ count($anggotas) }} anggota</span>
             <button x-data @click="$dispatch('open-modal')" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-md shadow-primary/30 flex items-center gap-2 transition-all shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -40,6 +48,9 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                    <th class="print-col hidden p-4 w-10 text-center border-b border-slate-200 transition-all">
+                        <input type="checkbox" id="checkAllAnggota" class="rounded text-primary border-slate-300 focus:ring-primary">
+                    </th>
                     <th class="p-4 font-semibold border-b border-slate-200">Barcode</th>
                     <th class="p-4 font-semibold border-b border-slate-200">Identitas</th>
                     <th class="p-4 font-semibold border-b border-slate-200">Nama Anggota</th>
@@ -52,6 +63,9 @@
             <tbody class="divide-y divide-slate-100">
                 @forelse($anggotas as $a)
                 <tr class="anggota-row hover:bg-slate-50/80 transition-colors" data-nama="{{ strtolower($a->nama_lengkap) }}" data-barcode="{{ strtolower($a->barcode) }}" data-identitas="{{ strtolower($a->nomor_identitas) }}" data-tipe="{{ $a->tipe_anggota }}">
+                    <td class="print-col hidden p-4 text-center transition-all">
+                        <input type="checkbox" class="check-anggota rounded text-primary border-slate-300 focus:ring-primary" value="{{ $a->id_anggota }}">
+                    </td>
                     <td class="p-4">
                         <div class="p-2 bg-white rounded-xl border border-slate-200 inline-block text-center shadow-sm">
                             <svg class="barcode w-32 h-12" jsbarcode-value="{{ $a->barcode }}" jsbarcode-displayvalue="true" jsbarcode-height="35" jsbarcode-width="1.5" jsbarcode-fontSize="14" jsbarcode-margin="0"></svg>
@@ -75,10 +89,24 @@
                         @endif
                     </td>
                     <td class="p-4 text-center">
-                        <a href="{{ route('anggota.show', $a->id_anggota) }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-primary hover:text-white text-slate-600 text-xs font-bold rounded-lg transition-colors border border-slate-200 hover:border-primary shadow-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            Detail
-                        </a>
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('anggota.cetak-kartu', ['ids' => $a->id_anggota]) }}" target="_blank" title="Cetak Kartu" class="p-1.5 bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-orange-500 shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                            </a>
+                            <a href="{{ route('anggota.show', $a->id_anggota) }}" title="Detail Profil" class="p-1.5 bg-slate-100 hover:bg-primary hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-primary shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </a>
+                            <button type="button" data-anggota="{{ json_encode($a) }}" onclick="window.dispatchEvent(new CustomEvent('open-edit-modal', { detail: JSON.parse(this.dataset.anggota) }))" title="Edit Data" class="p-1.5 bg-slate-100 hover:bg-amber-500 hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-amber-500 shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </button>
+                            <form action="{{ route('anggota.destroy', $a->id_anggota) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus anggota ini secara permanen?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" title="Hapus Permanen" class="p-1.5 bg-slate-100 hover:bg-rose-500 hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-rose-500 shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
@@ -159,7 +187,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-indigo-50 text-indigo-700 text-sm p-3 rounded-lg flex items-start gap-2 border border-indigo-100">
+                    <div class="bg-orange-50 text-orange-700 text-sm p-3 rounded-lg flex items-start gap-2 border border-orange-100">
                         <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>Sistem akan meng-generate Barcode unik dan mengatur status otomatis menjadi AKTIF.</span>
                     </div>
@@ -167,6 +195,95 @@
                 <div class="px-5 sm:px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3">
                     <button type="button" @click="open = false" class="order-2 sm:order-1 px-4 py-2.5 font-medium text-slate-600 hover:text-slate-800 transition-colors rounded-xl border border-slate-200 text-sm">Batal</button>
                     <button type="submit" class="order-1 sm:order-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl text-sm font-medium shadow-md shadow-primary/30 transition-all">Simpan Anggota</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit (Powered by AlpineJS) -->
+<div x-data="{ 
+        editOpen: false, 
+        anggota: {},
+        updateUrl: ''
+    }" 
+    @open-edit-modal.window="
+        anggota = $event.detail; 
+        updateUrl = '/anggota/' + anggota.id_anggota;
+        editOpen = true;
+    " 
+    x-show="editOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+    <div class="flex items-end sm:items-center justify-center min-h-screen sm:px-4">
+        <!-- Backdrop -->
+        <div x-show="editOpen" class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-sm" @click="editOpen = false"></div>
+
+        <div x-show="editOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             class="relative w-full sm:max-w-2xl bg-white rounded-t-3xl sm:rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 border border-slate-100">
+            <div class="px-5 sm:px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <h3 class="text-base sm:text-lg font-bold text-slate-800">Edit Data Anggota</h3>
+                <button @click="editOpen = false" class="text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form :action="updateUrl" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="p-5 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Tipe Anggota <span class="text-red-500">*</span></label>
+                            <select name="tipe_anggota" x-model="anggota.tipe_anggota" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                                <option value="Siswa">Siswa</option>
+                                <option value="Guru">Guru</option>
+                                <option value="Staf">Staf</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nomor Identitas (NIS/NIP) <span class="text-red-500">*</span></label>
+                            <input type="text" name="nomor_identitas" x-model="anggota.nomor_identitas" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama_lengkap" x-model="anggota.nama_lengkap" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
+                            <select name="jenis_kelamin" x-model="anggota.jenis_kelamin" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Kelas / Jabatan</label>
+                            <input type="text" name="kelas_atau_jabatan" x-model="anggota.kelas_atau_jabatan" placeholder="Contoh: XII IPA 1 / Guru Matematika" class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">No Telepon / WhatsApp</label>
+                            <input type="text" name="no_telepon" x-model="anggota.no_telepon" class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Status Anggota</label>
+                        <select name="status_anggota" x-model="anggota.status_anggota" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <option value="aktif">Aktif</option>
+                            <option value="nonaktif">Nonaktif</option>
+                            <option value="diblokir">Diblokir</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="px-5 sm:px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3">
+                    <button type="button" @click="editOpen = false" class="order-2 sm:order-1 px-4 py-2.5 font-medium text-slate-600 hover:text-slate-800 transition-colors rounded-xl border border-slate-200 text-sm">Batal</button>
+                    <button type="submit" class="order-1 sm:order-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl text-sm font-medium shadow-md shadow-primary/30 transition-all">Perbarui Data</button>
                 </div>
             </form>
         </div>
@@ -227,6 +344,43 @@
         if (noResult) {
             noResult.classList.toggle('hidden', visible > 0 || rows.length === 0);
         }
+    }
+
+    document.getElementById('checkAllAnggota')?.addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.check-anggota');
+        checkboxes.forEach(cb => {
+            if(cb.closest('tr').style.display !== 'none') {
+                cb.checked = this.checked;
+            }
+        });
+    });
+
+    function togglePrintMode() {
+        const cols = document.querySelectorAll('.print-col');
+        cols.forEach(col => col.classList.toggle('hidden'));
+        
+        const btnCetak = document.getElementById('btnCetakTerpilih');
+        if (btnCetak.classList.contains('hidden')) {
+            btnCetak.classList.remove('hidden');
+            btnCetak.classList.add('sm:inline-flex');
+        } else {
+            btnCetak.classList.add('hidden');
+            btnCetak.classList.remove('sm:inline-flex');
+            
+            // Uncheck all when closing print mode
+            document.getElementById('checkAllAnggota').checked = false;
+            document.querySelectorAll('.check-anggota').forEach(cb => cb.checked = false);
+        }
+    }
+
+    function cetakTerpilih() {
+        const checked = document.querySelectorAll('.check-anggota:checked');
+        if (checked.length === 0) {
+            alert('Pilih minimal satu anggota untuk dicetak kartunya!');
+            return;
+        }
+        const ids = Array.from(checked).map(cb => cb.value).join(',');
+        window.open("{{ route('anggota.cetak-kartu') }}?ids=" + ids, '_blank');
     }
 </script>
 @endsection

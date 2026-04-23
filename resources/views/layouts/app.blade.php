@@ -13,7 +13,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { primary: '#4f46e5', secondary: '#0ea5e9' }
+                    colors: { primary: '#16a34a', secondary: '#ea580c' }
                 }
             }
         }
@@ -56,12 +56,13 @@
         class="fixed top-0 left-0 z-40 w-64 bg-slate-900 text-white flex flex-col h-full shadow-2xl"
     >
         <!-- Logo -->
-        <div class="h-16 flex items-center px-6 border-b border-slate-700 bg-slate-950/50 shrink-0">
+        <div class="h-16 flex items-center px-4 border-b border-slate-700 bg-slate-950/50 shrink-0">
             <div class="flex items-center gap-3 flex-1">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-lg shadow-lg">
-                    S
+                <img src="{{ asset('logo.png') }}" alt="Logo SMA Negeri 1 Suwawa" class="w-10 h-10 object-contain drop-shadow-md">
+                <div class="flex flex-col">
+                    <span class="font-bold text-base tracking-wide leading-none text-white">SMA NEGERI 1</span>
+                    <span class="text-[11px] text-slate-400 font-medium tracking-widest mt-1">SUWAWA</span>
                 </div>
-                <span class="font-bold text-xl tracking-wide">SIPERPUS</span>
             </div>
             <!-- Close button (all screens) -->
             <button @click="sidebarOpen = false" class="text-slate-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-slate-800">

@@ -24,7 +24,7 @@
         <!-- Sisi Kiri: Biodata -->
         <div class="lg:col-span-4 space-y-6">
             <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden relative">
-                <div class="h-32 bg-gradient-to-br from-primary to-indigo-600"></div>
+                <div class="h-32 bg-gradient-to-br from-primary to-orange-600"></div>
                 <div class="px-6 pb-6 relative">
                     <!-- Avatar -->
                     <div class="w-24 h-24 bg-white rounded-2xl shadow-lg border-4 border-white mx-auto -mt-12 flex items-center justify-center text-primary text-4xl font-black mb-4 overflow-hidden relative group">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
                     <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Kunjungan</div>
-                    <div class="text-2xl font-black text-indigo-500">{{ $kunjungans->count() }}</div>
+                    <div class="text-2xl font-black text-orange-500">{{ $kunjungans->count() }}</div>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
                 <button @click="tab = 'peminjaman'" :class="{'bg-primary text-white shadow-md': tab === 'peminjaman', 'text-slate-600 hover:bg-slate-50': tab !== 'peminjaman'}" class="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">
                     Riwayat Peminjaman ({{ $peminjamans->count() }})
                 </button>
-                <button @click="tab = 'kunjungan'" :class="{'bg-indigo-500 text-white shadow-md': tab === 'kunjungan', 'text-slate-600 hover:bg-slate-50': tab !== 'kunjungan'}" class="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">
+                <button @click="tab = 'kunjungan'" :class="{'bg-orange-500 text-white shadow-md': tab === 'kunjungan', 'text-slate-600 hover:bg-slate-50': tab !== 'kunjungan'}" class="flex-1 py-2.5 rounded-xl text-sm font-bold transition-all">
                     Riwayat Kunjungan ({{ $kunjungans->count() }})
                 </button>
             </div>

@@ -21,15 +21,15 @@
                     },
                     colors: {
                         primary: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            900: '#312e81',
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            900: '#14532d',
                         },
                         accent: {
-                            500: '#f43f5e',
-                            600: '#e11d48',
+                            500: '#f97316',
+                            600: '#ea580c',
                         }
                     },
                     animation: {
@@ -77,10 +77,11 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center font-display font-bold text-xl text-white shadow-lg shadow-primary-500/30">
-                        S
+                    <img src="{{ asset('logo.png') }}" alt="Logo SMA N 1 Suwawa" class="w-12 h-12 object-contain drop-shadow-md">
+                    <div class="flex flex-col">
+                        <span class="font-display font-bold text-xl tracking-tight text-slate-900 leading-none">SMA NEGERI 1</span>
+                        <span class="text-xs text-slate-500 font-semibold tracking-widest mt-1">SUWAWA</span>
                     </div>
-                    <span class="font-display font-bold text-2xl tracking-tight text-slate-900">SIPERPUS</span>
                 </div>
 
                 <!-- Desktop Menu -->
@@ -127,16 +128,16 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-100 text-primary-600 font-medium text-sm mb-8">
                 <span class="flex h-2 w-2 rounded-full bg-primary-500"></span>
-                Sistem Perpustakaan Modern
+                Perpustakaan Digital Terpadu
             </div>
             
             <h1 class="text-5xl md:text-7xl font-display font-extrabold text-slate-900 tracking-tight mb-8 leading-tight">
-                Jelajahi Dunia Melalui <br class="hidden md:block" />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Koleksi Buku Kami</span>
+                Selamat Datang di <br class="hidden md:block" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Perpustakaan SMA N 1 Suwawa</span>
             </h1>
             
             <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
-                Akses ribuan literatur berkualitas, buku pelajaran, dan novel inspiratif. Tingkatkan wawasan Anda bersama SIPERPUS.
+                Akses ribuan literatur berkualitas, buku pelajaran, dan referensi belajar untuk mendukung kegiatan akademik Anda di SMA Negeri 1 Suwawa.
             </p>
             
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -242,9 +243,9 @@
                     <div class="relative bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-4">
-                                <div class="h-40 rounded-2xl bg-gradient-to-br from-indigo-100 to-purple-100 flex flex-col items-center justify-center p-6 text-center">
-                                    <div class="text-3xl font-display font-bold text-indigo-600 mb-1">10k+</div>
-                                    <div class="text-sm font-medium text-indigo-900">Koleksi Buku</div>
+                                <div class="h-40 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-100 flex flex-col items-center justify-center p-6 text-center">
+                                    <div class="text-3xl font-display font-bold text-orange-600 mb-1">10k+</div>
+                                    <div class="text-sm font-medium text-orange-900">Koleksi Buku</div>
                                 </div>
                                 <div class="h-32 rounded-2xl bg-gradient-to-br from-rose-100 to-orange-100 flex flex-col items-center justify-center p-6 text-center">
                                     <div class="text-3xl font-display font-bold text-rose-600 mb-1">5k+</div>
@@ -269,13 +270,13 @@
                 <div class="order-1 lg:order-2">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-50 border border-accent-100 text-accent-600 font-medium text-sm mb-6">
                         <span class="flex h-2 w-2 rounded-full bg-accent-500"></span>
-                        Tentang Kami
+                        Profil Layanan
                     </div>
                     <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-6 leading-tight">
-                        Membangun Generasi Cerdas Melalui <span class="text-primary-600">Literasi</span>
+                        Fasilitas Perpustakaan <span class="text-primary-600">SMA N 1 Suwawa</span>
                     </h2>
                     <p class="text-slate-600 text-lg mb-8 leading-relaxed">
-                        SIPERPUS adalah Sistem Informasi Perpustakaan terpadu yang dirancang untuk memudahkan siswa dan guru dalam mengakses sumber belajar. Kami berkomitmen menyediakan ekosistem perpustakaan yang modern, cepat, dan mudah digunakan.
+                        Perpustakaan SMA Negeri 1 Suwawa hadir dengan fasilitas digital modern untuk memberikan kemudahan bagi seluruh siswa dan guru dalam mencari, meminjam, dan mengelola referensi belajar secara efisien.
                     </p>
                     
                     <ul class="space-y-4 mb-10">
@@ -284,8 +285,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900 text-base">Pencarian Cepat</h4>
-                                <p class="text-slate-500 text-sm mt-1">Temukan buku yang Anda butuhkan dalam hitungan detik dengan sistem katalog terintegrasi kami.</p>
+                                <h4 class="font-bold text-slate-900 text-base">Katalog Digital Terlengkap</h4>
+                                <p class="text-slate-500 text-sm mt-1">Cari buku paket pelajaran maupun referensi dengan cepat melalui sistem pencarian katalog terintegrasi.</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -293,8 +294,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900 text-base">Sistem Barcode</h4>
-                                <p class="text-slate-500 text-sm mt-1">Proses peminjaman dan pengembalian lebih efisien menggunakan integrasi teknologi barcode.</p>
+                                <h4 class="font-bold text-slate-900 text-base">Peminjaman Berbasis Barcode</h4>
+                                <p class="text-slate-500 text-sm mt-1">Proses sirkulasi buku (peminjaman & pengembalian) kini lebih cepat dan akurat menggunakan Kartu Pelajar ber-barcode.</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -302,8 +303,8 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-900 text-base">Pantau Secara Real-time</h4>
-                                <p class="text-slate-500 text-sm mt-1">Cek ketersediaan buku dan riwayat peminjaman Anda kapan saja dan di mana saja.</p>
+                                <h4 class="font-bold text-slate-900 text-base">Jam Operasional Teratur</h4>
+                                <p class="text-slate-500 text-sm mt-1">Perpustakaan melayani peminjaman setiap hari Senin - Jumat pada jam kerja sekolah (07.30 - 15.00 WITA).</p>
                             </div>
                         </li>
                     </ul>
@@ -347,15 +348,15 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-6">Kontak</h4>
+                    <h4 class="text-white font-bold mb-6">Kontak Perpustakaan</h4>
                     <ul class="space-y-4 text-sm text-slate-400">
                         <li class="flex gap-3">
                             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <span>Jl. Pendidikan No. 123, Kota Pelajar, Indonesia</span>
+                            <span>Suwawa, Kabupaten Bone Bolango, Provinsi Gorontalo</span>
                         </li>
                         <li class="flex gap-3">
                             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            <span>info@siperpus.sch.id</span>
+                            <span>perpus@sman1suwawa.sch.id</span>
                         </li>
                     </ul>
                 </div>

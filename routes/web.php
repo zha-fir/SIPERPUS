@@ -45,11 +45,17 @@ Route::middleware('auth')->group(function () {
     // Master Data Anggota
     Route::get('/anggota', [AnggotaController::class, 'index'])->name('anggota.index');
     Route::post('/anggota', [AnggotaController::class, 'store'])->name('anggota.store');
+    Route::get('/anggota/cetak-kartu', [AnggotaController::class, 'cetakKartu'])->name('anggota.cetak-kartu');
     Route::get('/anggota/{id}', [AnggotaController::class, 'show'])->name('anggota.show');
+    Route::put('/anggota/{id}', [AnggotaController::class, 'update'])->name('anggota.update');
+    Route::delete('/anggota/{id}', [AnggotaController::class, 'destroy'])->name('anggota.destroy');
 
     // Master Data Buku
     Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
     Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
+    Route::get('/buku/cetak-barcode', [BukuController::class, 'cetakBarcode'])->name('buku.cetak-barcode');
+    Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
+    Route::delete('/buku/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
 
     // Transaksi Peminjaman
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
@@ -68,4 +74,5 @@ Route::middleware('auth')->group(function () {
 
     // Laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
 });

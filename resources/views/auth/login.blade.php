@@ -16,12 +16,12 @@
                     },
                     colors: {
                         primary: {
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            900: '#312e81',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
                         },
                         accent: {
-                            500: '#f43f5e',
+                            500: '#f97316',
                         }
                     }
                 }
@@ -37,10 +37,8 @@
         
         <div class="p-8 relative z-10">
             <div class="text-center mb-8">
-                <div class="w-14 h-14 mx-auto bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/30 mb-4 transform -rotate-3">
-                    <span class="font-display font-bold text-3xl text-white">S</span>
-                </div>
-                <h2 class="text-2xl font-display font-bold text-slate-900">Selamat Datang Kembali</h2>
+                <img src="{{ asset('logo.png') }}" alt="Logo SMA N 1 Suwawa" class="w-16 h-16 mx-auto object-contain drop-shadow-md mb-4">
+                <h2 class="text-2xl font-display font-bold text-slate-900 leading-tight">SMA NEGERI 1 SUWAWA</h2>
                 <p class="text-slate-500 text-sm mt-1">Silakan masuk ke panel admin SIPERPUS</p>
             </div>
 

@@ -59,4 +59,62 @@ class AnggotaController extends Controller
 
         return view('anggota.show', compact('anggota', 'peminjamans', 'kunjungans'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $anggota = Anggota::findOrFail($id);
+        
+        $request->validate([
+            'tipe_anggota' => 'required|in:Siswa,Guru,Staf',
+            'nomor_identitas' => 'required|unique:anggota,nomor_identitas,' . $id . ',id_anggota',
+            'nama_lengkap' => 'required',
+            'jenis_kelamin' => 'required|in:L,P',
+            'kelas_atau_jabatan' => 'nullable',
+            'no_telepon' => 'nullable',
+            'status_anggota' => 'required|in:aktif,nonaktif,diblokir'
+        ]);
+
+        $anggota->update([
+            'tipe_anggota' => $request->tipe_anggota,
+            'nomor_identitas' => $request->nomor_identitas,
+            'nama_lengkap' => $request->nama_lengkap,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'kelas_atau_jabatan' => $request->kelas_atau_jabatan,
+            'no_telepon' => $request->no_telepon,
+            'status_anggota' => $request->status_anggota
+        ]);
+
+        return redirect()->back()->with('success', 'Data anggota berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $anggota = Anggota::findOrFail($id);
+
+        // Validasi SLiMS: Cek apakah masih ada pinjaman aktif
+        $pinjamanAktif = \App\Models\Peminjaman::where('id_anggota', $id)
+            ->where('status', 'dipinjam')
+            ->exists();
+
+        if ($pinjamanAktif) {
+            return redirect()->back()->with('error', 'Gagal menghapus! Anggota ini masih memiliki buku yang belum dikembalikan (pinjaman aktif).');
+        }
+
+        $anggota->delete();
+
+        return redirect()->back()->with('success', 'Data anggota berhasil dihapus secara permanen.');
+    }
+
+    public function cetakKartu(Request $request)
+    {
+        $ids = $request->input('ids');
+        if (!$ids) {
+            return redirect()->back()->with('error', 'Tidak ada anggota yang dipilih untuk dicetak.');
+        }
+
+        $idArray = explode(',', $ids);
+        $anggotas = Anggota::whereIn('id_anggota', $idArray)->get();
+
+        return view('anggota.cetak-kartu', compact('anggotas'));
+    }
 }

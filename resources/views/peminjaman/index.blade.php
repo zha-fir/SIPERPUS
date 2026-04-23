@@ -65,7 +65,7 @@
                     <td class="p-4">
                         <div class="font-bold text-slate-800">{{ $p->anggota->nama_lengkap ?? '-' }}</div>
                         <div class="text-xs text-slate-500 mt-0.5">
-                            <span class="font-mono bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded text-[10px]">{{ $p->anggota->barcode ?? '-' }}</span>
+                            <span class="font-mono bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">{{ $p->anggota->barcode ?? '-' }}</span>
                             <span class="ml-1">{{ $p->anggota->kelas_atau_jabatan ?? '' }}</span>
                         </div>
                     </td>

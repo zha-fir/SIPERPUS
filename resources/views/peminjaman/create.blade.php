@@ -48,17 +48,17 @@
             
             <!-- Book Scanner Input -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
+                <div class="absolute top-0 left-0 w-1 h-full bg-orange-500"></div>
                 <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Input Barang (Buku)</h3>
                 
                 <form @submit.prevent="checkBook" class="relative">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                        <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                     </div>
-                    <input type="text" x-model="bookBarcode" x-ref="bookInput" :disabled="isLoading" autocomplete="off" class="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-indigo-100 bg-indigo-50/30 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 font-mono text-xl transition-all" placeholder="Scan Barcode Buku...">
+                    <input type="text" x-model="bookBarcode" x-ref="bookInput" :disabled="isLoading" autocomplete="off" class="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-orange-100 bg-orange-50/30 focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 font-mono text-xl transition-all" placeholder="Scan Barcode Buku...">
                     
                     <div x-show="isLoading" class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                        <svg class="animate-spin h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg class="animate-spin h-5 w-5 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </div>
                 </form>
             </div>
@@ -70,7 +70,7 @@
                         <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         Daftar Buku Dipinjam
                     </h3>
-                    <span class="bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full text-xs" x-text="books.length + ' Item'"></span>
+                    <span class="bg-orange-100 text-orange-700 font-bold px-3 py-1 rounded-full text-xs" x-text="books.length + ' Item'"></span>
                 </div>
                 
                 <div class="flex-1 overflow-auto">
@@ -93,7 +93,7 @@
                                     <td class="p-3">
                                         <div class="font-bold text-slate-800 text-sm" x-text="book.judul"></div>
                                         <div class="text-xs text-slate-500 mt-0.5">
-                                            <span x-text="book.penulis"></span> &bull; <span class="text-indigo-500" x-text="book.klasifikasi"></span>
+                                            <span x-text="book.penulis"></span> &bull; <span class="text-orange-500" x-text="book.klasifikasi"></span>
                                         </div>
                                     </td>
                                     <td class="p-3 text-center">
@@ -120,7 +120,7 @@
             
             <!-- Member Card -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden relative">
-                <div class="h-24 bg-gradient-to-r from-primary to-indigo-600"></div>
+                <div class="h-24 bg-gradient-to-r from-primary to-orange-600"></div>
                 <div class="px-6 pb-6 relative">
                     <div class="w-20 h-20 bg-white rounded-2xl shadow-md border-4 border-white mx-auto -mt-10 flex items-center justify-center text-primary text-2xl font-black mb-3 overflow-hidden">
                         <!-- Placeholder Foto -->
