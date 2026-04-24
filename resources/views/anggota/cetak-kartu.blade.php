@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cetak Kartu Anggota - SIPERPUS</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <!-- Add html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,6 +20,7 @@
             padding: 10mm;
             margin: 0 auto;
             background: white;
+            box-sizing: border-box; /* Fix overflow */
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -152,11 +155,16 @@
                 margin: 10mm;
             }
         }
-        .print-btn {
+        .action-buttons {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #4f46e5;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        .btn {
+            background: #16a34a;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -165,17 +173,26 @@
             font-size: 14px;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            z-index: 100;
+            transition: opacity 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn-alt {
+            background: #ea580c;
         }
         @media print {
-            .print-btn {
+            .action-buttons {
                 display: none;
             }
         }
     </style>
 </head>
 <body>
-    <button class="print-btn" onclick="window.print()">🖨️ Cetak Kartu</button>
+    <div class="action-buttons" data-html2canvas-ignore="true">
+        <button class="btn btn-alt" onclick="downloadPDF()">📥 Download PDF</button>
+        <button class="btn" onclick="window.print()">🖨️ Cetak Langsung</button>
+    </div>
 
     <div class="page">
         @foreach($anggotas as $a)
@@ -225,11 +242,27 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             JsBarcode(".barcode").init();
-            // Auto print after a short delay to allow barcodes to render
-            setTimeout(() => {
-                window.print();
-            }, 500);
         });
+
+        function downloadPDF() {
+            const element = document.querySelector('.page');
+            const opt = {
+                margin:       0,
+                filename:     'kartu_anggota_siperpus.pdf',
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: 4, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Mengubah teks tombol agar user tahu sedang diproses
+            const dlBtn = document.querySelector('.btn-alt');
+            const originalText = dlBtn.innerHTML;
+            dlBtn.innerHTML = '⏳ Memproses...';
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                dlBtn.innerHTML = originalText;
+            });
+        }
     </script>
 </body>
 </html>

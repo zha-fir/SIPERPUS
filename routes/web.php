@@ -33,9 +33,21 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Helpdesk Routes (Public)
+Route::prefix('helpdesk')->group(function () {
+    Route::get('/', [\App\Http\Controllers\HelpdeskController::class, 'create'])->name('helpdesk.create');
+    Route::post('/submit', [\App\Http\Controllers\HelpdeskController::class, 'store'])->name('helpdesk.store');
+    Route::get('/status', [\App\Http\Controllers\HelpdeskController::class, 'statusView'])->name('helpdesk.status.view');
+});
+
 // Protected Admin Routes
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Manajemen Insiden
+    Route::get('/insiden', [\App\Http\Controllers\InsidenController::class, 'index'])->name('insiden.index');
+    Route::get('/insiden/{id}', [\App\Http\Controllers\InsidenController::class, 'show'])->name('insiden.show');
+    Route::put('/insiden/{id}', [\App\Http\Controllers\InsidenController::class, 'update'])->name('insiden.update');
 
     // Kunjungan (Buku Tamu)
     Route::get('/kunjungan', [KunjunganController::class, 'index'])->name('kunjungan.index');

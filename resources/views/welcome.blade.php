@@ -89,6 +89,7 @@
                     <a href="#beranda" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Beranda</a>
                     <a href="#katalog" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Katalog Buku</a>
                     <a href="#tentang" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Tentang Kami</a>
+                    <a href="{{ route('helpdesk.create') }}" class="text-sm font-semibold text-accent-600 hover:text-accent-700 transition-colors">Pusat Bantuan</a>
                     <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold text-white transition-all bg-slate-900 rounded-full hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5">
                         Login Admin
                     </a>
@@ -112,6 +113,7 @@
                 <a href="#beranda" @click="mobileMenuOpen = false" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Beranda</a>
                 <a href="#katalog" @click="mobileMenuOpen = false" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Katalog Buku</a>
                 <a href="#tentang" @click="mobileMenuOpen = false" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Tentang Kami</a>
+                <a href="{{ route('helpdesk.create') }}" class="block px-3 py-3 rounded-md text-base font-medium text-accent-600 hover:text-accent-700 hover:bg-slate-50">Pusat Bantuan</a>
                 <a href="{{ route('dashboard') }}" class="block px-3 py-3 mt-4 text-center rounded-lg text-base font-bold text-white bg-slate-900">Login Admin</a>
             </div>
         </div>
@@ -344,6 +346,7 @@
                         <li><a href="#beranda" class="hover:text-primary-400 transition-colors">Beranda</a></li>
                         <li><a href="#katalog" class="hover:text-primary-400 transition-colors">Katalog Buku</a></li>
                         <li><a href="#tentang" class="hover:text-primary-400 transition-colors">Tentang Kami</a></li>
+                        <li><a href="{{ route('helpdesk.create') }}" class="hover:text-accent-400 transition-colors">Pusat Bantuan</a></li>
                         <li><a href="{{ route('dashboard') }}" class="hover:text-primary-400 transition-colors">Portal Admin</a></li>
                     </ul>
                 </div>
