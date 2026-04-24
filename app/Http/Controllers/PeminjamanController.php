@@ -50,23 +50,23 @@ class PeminjamanController extends Controller
     public function cekBuku(Request $request)
     {
         $barcode = $request->query('barcode');
-        $buku = Buku::where('kode_buku', $barcode)->first();
+        $eksemplar = \App\Models\Eksemplar::with('buku')->where('kode_eksemplar', $barcode)->first();
 
-        if (!$buku) {
-            return response()->json(['success' => false, 'message' => 'Buku tidak ditemukan']);
+        if (!$eksemplar) {
+            return response()->json(['success' => false, 'message' => 'Buku/Eksemplar tidak ditemukan']);
         }
 
-        if ($buku->jumlah_tersedia <= 0) {
-            return response()->json(['success' => false, 'message' => 'Stok buku habis']);
+        if ($eksemplar->status !== 'Tersedia') {
+            return response()->json(['success' => false, 'message' => 'Status buku ini: ' . $eksemplar->status]);
         }
 
         return response()->json([
             'success' => true,
             'data' => [
-                'kode_buku' => $buku->kode_buku,
-                'judul' => $buku->judul_buku,
-                'penulis' => $buku->penulis,
-                'klasifikasi' => $buku->klasifikasi_ddc
+                'kode_buku' => $eksemplar->kode_eksemplar,
+                'judul' => $eksemplar->buku->judul_buku,
+                'penulis' => $eksemplar->buku->penulis,
+                'klasifikasi' => $eksemplar->buku->klasifikasi_ddc
             ]
         ]);
     }
@@ -101,21 +101,25 @@ class PeminjamanController extends Controller
                 'status' => 'dipinjam'
             ]);
 
-            foreach ($request->kode_buku as $kodeBuku) {
-                if (!$kodeBuku) continue;
+            foreach ($request->kode_buku as $kodeEksemplar) {
+                if (!$kodeEksemplar) continue;
 
-                $buku = Buku::where('kode_buku', $kodeBuku)->first();
-                if ($buku && $buku->jumlah_tersedia > 0) {
+                $eksemplar = \App\Models\Eksemplar::with('buku')->where('kode_eksemplar', $kodeEksemplar)->first();
+                if ($eksemplar && $eksemplar->status === 'Tersedia') {
                     DetailPeminjaman::create([
                         'id_peminjaman' => $peminjaman->id_peminjaman,
-                        'id_buku' => $buku->id_buku,
+                        'id_eksemplar' => $eksemplar->id_eksemplar,
                         'status' => 'dipinjam'
                     ]);
 
-                    $buku->decrement('jumlah_tersedia');
+                    $eksemplar->update(['status' => 'Dipinjam']);
+                    
+                    if ($eksemplar->buku) {
+                        $eksemplar->buku->decrement('jumlah_tersedia');
+                    }
                 } else {
                     DB::rollBack();
-                    return redirect()->back()->with('error', "Buku dengan kode {$kodeBuku} tidak tersedia atau stok habis.");
+                    return redirect()->back()->with('error', "Buku dengan kode {$kodeEksemplar} tidak tersedia.");
                 }
             }
 

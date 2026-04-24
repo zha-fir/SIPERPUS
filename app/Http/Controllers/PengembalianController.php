@@ -7,6 +7,7 @@ use App\Models\Peminjaman;
 use App\Models\DetailPeminjaman;
 use App\Models\Pengembalian;
 use App\Models\Anggota;
+use App\Models\Eksemplar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class PengembalianController extends Controller
 {
     public function index()
     {
-        $pengembalians = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.buku'])->latest()->get();
+        $pengembalians = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.eksemplar.buku'])->latest()->get();
         return view('pengembalian.index', compact('pengembalians'));
     }
 
@@ -37,7 +38,7 @@ class PengembalianController extends Controller
         $peminjamans = Peminjaman::where('id_anggota', $anggota->id_anggota)
                         ->where('status', 'dipinjam')
                         ->with(['detailPeminjamans' => function($q) {
-                            $q->where('status', 'dipinjam')->with('buku');
+                            $q->where('status', 'dipinjam')->with('eksemplar.buku');
                         }])
                         ->get();
 
@@ -55,12 +56,12 @@ class PengembalianController extends Controller
             }
 
             foreach ($p->detailPeminjamans as $detail) {
-                if ($detail->buku) {
+                if ($detail->eksemplar && $detail->eksemplar->buku) {
                     $tanggungan_buku[] = [
                         'id_peminjaman' => $p->id_peminjaman,
-                        'kode_buku' => $detail->buku->kode_buku,
-                        'judul' => $detail->buku->judul_buku,
-                        'penulis' => $detail->buku->penulis,
+                        'kode_buku' => $detail->eksemplar->kode_eksemplar,
+                        'judul' => $detail->eksemplar->buku->judul_buku,
+                        'penulis' => $detail->eksemplar->buku->penulis,
                         'tanggal_pinjam' => \Carbon\Carbon::parse($p->tanggal_pinjam)->format('d M Y'),
                         'jatuh_tempo' => \Carbon\Carbon::parse($p->tanggal_jatuh_tempo)->format('d M Y'),
                         'is_terlambat' => $hariTelat > 0,
@@ -102,15 +103,15 @@ class PengembalianController extends Controller
             foreach ($request->kode_buku as $kodeBuku) {
                 if (!$kodeBuku) continue;
 
-                // 1. Cari buku berdasarkan kode
-                $buku = \App\Models\Buku::where('kode_buku', $kodeBuku)->first();
-                if (!$buku) {
+                // 1. Cari eksemplar berdasarkan kode
+                $eksemplar = \App\Models\Eksemplar::with('buku')->where('kode_eksemplar', $kodeBuku)->first();
+                if (!$eksemplar) {
                     $bukuNotFound[] = $kodeBuku;
                     continue;
                 }
 
-                // 2. Cari peminjaman aktif untuk buku ini
-                $detail = DetailPeminjaman::where('id_buku', $buku->id_buku)
+                // 2. Cari peminjaman aktif untuk eksemplar ini
+                $detail = DetailPeminjaman::where('id_eksemplar', $eksemplar->id_eksemplar)
                             ->where('status', 'dipinjam')
                             ->first();
 
@@ -136,8 +137,11 @@ class PengembalianController extends Controller
                     // Update detail peminjaman
                     $detail->update(['status' => 'dikembalikan']);
                     
-                    // Kembalikan stok buku
-                    $buku->increment('jumlah_tersedia');
+                    // Kembalikan status eksemplar dan stok buku
+                    $eksemplar->update(['status' => 'Tersedia']);
+                    if ($eksemplar->buku) {
+                        $eksemplar->buku->increment('jumlah_tersedia');
+                    }
                     $bukuDikembalikanCount++;
                 } else {
                     // Buku ditemukan tapi tidak dalam status dipinjam

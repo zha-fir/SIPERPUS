@@ -140,21 +140,23 @@
 
     <div class="page">
         @foreach($bukus as $b)
-        <div class="barcode-label">
-            <div class="header">PERPUSTAKAAN SEKOLAH</div>
-            <div class="book-title">{{ $b->judul_buku }}</div>
-            <div class="call-number">{{ $b->klasifikasi_ddc ?? '-' }} | RAK: {{ $b->lokasi_rak ?? '-' }}</div>
-            <div class="barcode-area">
-                <svg class="barcode" 
-                    jsbarcode-value="{{ $b->kode_buku }}" 
-                    jsbarcode-displayvalue="true" 
-                    jsbarcode-height="30" 
-                    jsbarcode-width="1.5" 
-                    jsbarcode-fontSize="11" 
-                    jsbarcode-margin="0">
-                </svg>
+            @foreach($b->eksemplars as $eksemplar)
+            <div class="barcode-label">
+                <div class="header">PERPUSTAKAAN SEKOLAH</div>
+                <div class="book-title">{{ $b->judul_buku }}</div>
+                <div class="call-number">{{ $b->klasifikasi_ddc ?? '-' }} | RAK: {{ $b->lokasi_rak ?? '-' }}</div>
+                <div class="barcode-area">
+                    <svg class="barcode" 
+                        jsbarcode-value="{{ $eksemplar->kode_eksemplar }}" 
+                        jsbarcode-displayvalue="true" 
+                        jsbarcode-height="30" 
+                        jsbarcode-width="1.5" 
+                        jsbarcode-fontSize="11" 
+                        jsbarcode-margin="0">
+                    </svg>
+                </div>
             </div>
-        </div>
+            @endforeach
         @endforeach
     </div>
 

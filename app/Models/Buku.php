@@ -13,8 +13,8 @@ class Buku extends Model
     protected $primaryKey = 'id_buku';
     protected $guarded = [];
 
-    public function detailPeminjamans()
+    public function eksemplars()
     {
-        return $this->hasMany(DetailPeminjaman::class, 'id_buku', 'id_buku');
+        return $this->hasMany(Eksemplar::class, 'id_buku', 'id_buku');
     }
 }

@@ -113,6 +113,9 @@
                             <a href="{{ route('buku.cetak-barcode', ['ids' => $b->id_buku]) }}" target="_blank" title="Cetak Barcode" class="p-1.5 bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-orange-500 shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                             </a>
+                            <button type="button" @click="$dispatch('open-eksemplar-modal', {{ json_encode($b) }})" title="Lihat Eksemplar" class="p-1.5 bg-slate-100 hover:bg-emerald-500 hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-emerald-500 shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </button>
                             <button type="button" data-buku="{{ json_encode($b) }}" onclick="window.dispatchEvent(new CustomEvent('open-edit-modal', { detail: JSON.parse(this.dataset.buku) }))" title="Edit Data" class="p-1.5 bg-slate-100 hover:bg-amber-500 hover:text-white text-slate-600 rounded-lg transition-colors border border-slate-200 hover:border-amber-500 shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </button>
@@ -151,7 +154,8 @@
              x-transition:enter="ease-out duration-300"
              x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
              x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-             class="relative w-full sm:max-w-3xl bg-white rounded-t-3xl sm:rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 border border-slate-100">
+             class="relative w-full sm:max-w-3xl bg-white rounded-t-3xl sm:rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 border border-slate-100"
+             x-data="{ barcodes: [''] }">
             <div class="px-5 sm:px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                 <h3 class="text-base sm:text-lg font-bold text-slate-800">Tambah Katalog Buku</h3>
                 <button @click="open = false" class="text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -217,6 +221,26 @@
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Jumlah Eksemplar Masuk <span class="text-red-500">*</span></label>
                         <input type="number" name="jumlah_total" min="1" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                    </div>
+
+                    <div class="sm:col-span-2 mt-2 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <label class="block text-sm font-medium text-slate-800 mb-1">Daftar Barcode Bawaan (Opsional)</label>
+                        <p class="text-[10px] text-slate-500 mb-3">Jika buku fisik sudah memiliki barcode, scan/ketik di sini. Sistem akan menggunakan barcode ini untuk urutan eksemplar pertama, sisanya akan dibuatkan otomatis jika jumlahnya kurang dari Total Eksemplar Masuk.</p>
+                        
+                        <div class="space-y-2">
+                            <template x-for="(bc, index) in barcodes" :key="index">
+                                <div class="flex gap-2">
+                                    <input type="text" name="barcodes[]" x-model="barcodes[index]" placeholder="Scan barcode..." class="w-full rounded-lg border border-slate-200 p-2 text-sm focus:border-primary focus:ring-primary transition-all">
+                                    <button type="button" @click="if(barcodes.length > 1) barcodes.splice(index, 1)" class="px-3 py-2 bg-rose-50 text-rose-500 rounded-lg hover:bg-rose-100 transition-colors" title="Hapus input ini">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                        <button type="button" @click="barcodes.push('')" class="mt-3 text-xs font-bold text-primary flex items-center gap-1 hover:text-primary/80 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Tambah Input Barcode Lainnya
+                        </button>
                     </div>
 
                 </div>
@@ -326,6 +350,61 @@
                     <button type="submit" class="order-1 sm:order-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-xl text-sm font-medium shadow-md shadow-primary/30 transition-all">Simpan Perubahan</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eksemplar -->
+<div x-data="{ eksOpen: false, bukuData: null }" 
+    @open-eksemplar-modal.window="bukuData = $event.detail; eksOpen = true;" 
+    x-show="eksOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+    <div class="flex items-end sm:items-center justify-center min-h-screen sm:px-4">
+        <div x-show="eksOpen" class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-sm" @click="eksOpen = false"></div>
+
+        <div x-show="eksOpen"
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             class="relative w-full sm:max-w-2xl bg-white rounded-t-3xl sm:rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 border border-slate-100">
+            <div class="px-5 sm:px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <h3 class="text-base sm:text-lg font-bold text-slate-800">Daftar Eksemplar: <span x-text="bukuData ? bukuData.judul_buku : ''"></span></h3>
+                <button @click="eksOpen = false" class="text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div class="p-5 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-500">
+                            <th class="p-3 border-b border-slate-200">No</th>
+                            <th class="p-3 border-b border-slate-200">Kode Eksemplar</th>
+                            <th class="p-3 border-b border-slate-200">Status</th>
+                            <th class="p-3 border-b border-slate-200 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-if="bukuData && bukuData.eksemplars">
+                            <template x-for="(eks, index) in bukuData.eksemplars" :key="eks.id_eksemplar">
+                                <tr class="hover:bg-slate-50 border-b border-slate-100 last:border-0">
+                                    <td class="p-3 text-slate-400" x-text="index + 1"></td>
+                                    <td class="p-3 font-mono font-bold text-slate-700" x-text="eks.kode_eksemplar"></td>
+                                    <td class="p-3">
+                                        <span class="px-2 py-1 text-[10px] font-bold uppercase rounded-full"
+                                            :class="{
+                                                'bg-emerald-50 text-emerald-600': eks.status === 'Tersedia',
+                                                'bg-orange-50 text-orange-600': eks.status === 'Dipinjam',
+                                                'bg-rose-50 text-rose-600': eks.status === 'Rusak' || eks.status === 'Hilang'
+                                            }" x-text="eks.status"></span>
+                                    </td>
+                                    <td class="p-3 text-center">
+                                        <a :href="'/buku/cetak-barcode?eksemplar_ids=' + eks.id_eksemplar" target="_blank" class="p-1.5 bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-600 rounded-lg inline-block transition-colors border border-slate-200 hover:border-orange-500 shadow-sm" title="Cetak Barcode Eksemplar Ini">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

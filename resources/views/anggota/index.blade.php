@@ -51,6 +51,7 @@
                     <th class="print-col hidden p-4 w-10 text-center border-b border-slate-200 transition-all">
                         <input type="checkbox" id="checkAllAnggota" class="rounded text-primary border-slate-300 focus:ring-primary">
                     </th>
+                    <th class="p-4 font-semibold border-b border-slate-200">Foto</th>
                     <th class="p-4 font-semibold border-b border-slate-200">Barcode</th>
                     <th class="p-4 font-semibold border-b border-slate-200">Identitas</th>
                     <th class="p-4 font-semibold border-b border-slate-200">Nama Anggota</th>
@@ -65,6 +66,15 @@
                 <tr class="anggota-row hover:bg-slate-50/80 transition-colors" data-nama="{{ strtolower($a->nama_lengkap) }}" data-barcode="{{ strtolower($a->barcode) }}" data-identitas="{{ strtolower($a->nomor_identitas) }}" data-tipe="{{ $a->tipe_anggota }}">
                     <td class="print-col hidden p-4 text-center transition-all">
                         <input type="checkbox" class="check-anggota rounded text-primary border-slate-300 focus:ring-primary" value="{{ $a->id_anggota }}">
+                    </td>
+                    <td class="p-4">
+                        <div class="w-12 h-16 shrink-0 bg-slate-100 rounded-lg border border-slate-200 overflow-hidden flex items-center justify-center shadow-sm">
+                            @if($a->foto)
+                                <img src="{{ asset('storage/' . $a->foto) }}" alt="Foto" class="w-full h-full object-cover">
+                            @else
+                                <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            @endif
+                        </div>
                     </td>
                     <td class="p-4">
                         <div class="p-2 bg-white rounded-xl border border-slate-200 inline-block text-center shadow-sm">
@@ -111,7 +121,7 @@
                 </tr>
                 @empty
                 <tr id="emptyRow">
-                    <td colspan="7" class="p-8 text-center text-slate-500">Belum ada data anggota.</td>
+                    <td colspan="8" class="p-8 text-center text-slate-500">Belum ada data anggota.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -144,9 +154,15 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <form action="{{ route('anggota.store') }}" method="POST">
+            <form action="{{ route('anggota.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="p-5 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Pas Foto (Opsional)</label>
+                        <input type="file" name="foto" accept="image/*" class="w-full rounded-xl border border-slate-200 p-2 text-sm bg-white focus:border-primary focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                        <p class="text-[10px] text-slate-400 mt-1">Format: JPG, PNG, WEBP. Maks 2MB. Disarankan rasio 3:4.</p>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Tipe Anggota <span class="text-red-500">*</span></label>
@@ -228,10 +244,16 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <form :action="updateUrl" method="POST">
+            <form :action="updateUrl" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="p-5 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Ganti Pas Foto (Opsional)</label>
+                        <input type="file" name="foto" accept="image/*" class="w-full rounded-xl border border-slate-200 p-2 text-sm bg-white focus:border-primary focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                        <p class="text-[10px] text-slate-400 mt-1">Biarkan kosong jika tidak ingin mengganti foto. Format: JPG, PNG, WEBP. Maks 2MB.</p>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Tipe Anggota <span class="text-red-500">*</span></label>

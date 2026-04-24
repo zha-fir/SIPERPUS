@@ -21,8 +21,14 @@ class AnggotaController extends Controller
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required|in:L,P',
             'kelas_atau_jabatan' => 'nullable',
-            'no_telepon' => 'nullable'
+            'no_telepon' => 'nullable',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
+
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('fotos', 'public');
+        }
 
         $newIdNumber = str_pad(Anggota::count() + 1, 4, '0', STR_PAD_LEFT);
         
@@ -34,6 +40,7 @@ class AnggotaController extends Controller
             'kelas_atau_jabatan' => $request->kelas_atau_jabatan,
             'no_telepon' => $request->no_telepon,
             'barcode' => 'ANG-' . $newIdNumber . '-' . rand(100, 999),
+            'foto' => $fotoPath,
             'status_anggota' => 'aktif',
             'tanggal_daftar' => now('Asia/Makassar')->format('Y-m-d')
         ]);
@@ -71,10 +78,11 @@ class AnggotaController extends Controller
             'jenis_kelamin' => 'required|in:L,P',
             'kelas_atau_jabatan' => 'nullable',
             'no_telepon' => 'nullable',
-            'status_anggota' => 'required|in:aktif,nonaktif,diblokir'
+            'status_anggota' => 'required|in:aktif,nonaktif,diblokir',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
-        $anggota->update([
+        $data = [
             'tipe_anggota' => $request->tipe_anggota,
             'nomor_identitas' => $request->nomor_identitas,
             'nama_lengkap' => $request->nama_lengkap,
@@ -82,7 +90,16 @@ class AnggotaController extends Controller
             'kelas_atau_jabatan' => $request->kelas_atau_jabatan,
             'no_telepon' => $request->no_telepon,
             'status_anggota' => $request->status_anggota
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            if ($anggota->foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($anggota->foto)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($anggota->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
+
+        $anggota->update($data);
 
         return redirect()->back()->with('success', 'Data anggota berhasil diperbarui.');
     }
@@ -98,6 +115,10 @@ class AnggotaController extends Controller
 
         if ($pinjamanAktif) {
             return redirect()->back()->with('error', 'Gagal menghapus! Anggota ini masih memiliki buku yang belum dikembalikan (pinjaman aktif).');
+        }
+
+        if ($anggota->foto && \Illuminate\Support\Facades\Storage::disk('public')->exists($anggota->foto)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($anggota->foto);
         }
 
         $anggota->delete();

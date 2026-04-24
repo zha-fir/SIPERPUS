@@ -18,8 +18,8 @@ class DetailPeminjaman extends Model
         return $this->belongsTo(Peminjaman::class, 'id_peminjaman', 'id_peminjaman');
     }
 
-    public function buku()
+    public function eksemplar()
     {
-        return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
+        return $this->belongsTo(Eksemplar::class, 'id_eksemplar', 'id_eksemplar');
     }
 }
