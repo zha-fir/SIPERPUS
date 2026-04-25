@@ -50,8 +50,8 @@
                 @php
                     $namaAnggota    = strtolower($p->anggota->nama_lengkap ?? '');
                     $barcodeAnggota = strtolower($p->anggota->barcode ?? '');
-                    $judulBukus     = strtolower($p->detailPeminjamans->map(fn($d) => optional($d->buku)->judul_buku)->filter()->implode(' '));
-                    $kodeBukus      = strtolower($p->detailPeminjamans->map(fn($d) => optional($d->buku)->kode_buku)->filter()->implode(' '));
+                    $judulBukus     = strtolower($p->detailPeminjamans->map(fn($d) => optional(optional($d->eksemplar)->buku)->judul_buku)->filter()->implode(' '));
+                    $kodeBukus      = strtolower($p->detailPeminjamans->map(fn($d) => optional($d->eksemplar)->kode_eksemplar)->filter()->implode(' '));
                 @endphp
                 <tr class="hover:bg-slate-50/80 transition-colors peminjaman-row"
                     data-nama="{{ $namaAnggota }}"
@@ -73,8 +73,8 @@
                         <ul class="space-y-1">
                             @foreach($p->detailPeminjamans as $detail)
                                 <li class="flex items-start gap-1.5 text-sm text-slate-700">
-                                    <span class="font-mono text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded mt-0.5 shrink-0">{{ $detail->buku->kode_buku ?? '-' }}</span>
-                                    <span>{{ $detail->buku->judul_buku ?? '-' }}
+                                    <span class="font-mono text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded mt-0.5 shrink-0">{{ optional($detail->eksemplar)->kode_eksemplar ?? '-' }}</span>
+                                    <span>{{ optional(optional($detail->eksemplar)->buku)->judul_buku ?? '-' }}
                                         @if($detail->status == 'dikembalikan')
                                             <span class="text-[10px] text-emerald-500 font-bold">✓</span>
                                         @endif

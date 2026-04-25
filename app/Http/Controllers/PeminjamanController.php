@@ -14,7 +14,7 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjamans = Peminjaman::with(['anggota', 'detailPeminjamans.buku'])->latest()->get();
+        $peminjamans = Peminjaman::with(['anggota', 'detailPeminjamans.eksemplar.buku'])->latest()->get();
         return view('peminjaman.index', compact('peminjamans'));
     }
 
