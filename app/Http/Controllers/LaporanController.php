@@ -19,13 +19,13 @@ class LaporanController extends Controller
         $tab = $request->input('tab', 'sirkulasi'); // Default tab
 
         // 1. Peminjaman yang sedang berjalan (status = dipinjam)
-        $peminjamanAktif = Peminjaman::with(['anggota', 'detailPeminjamans.buku'])
+        $peminjamanAktif = Peminjaman::with(['anggota', 'detailPeminjamans.eksemplar.buku'])
             ->where('status', 'dipinjam')
             ->orderBy('tanggal_pinjam', 'desc')
             ->get();
 
         // 2. Laporan Sirkulasi (Peminjaman & Pengembalian within date range)
-        $riwayatSirkulasi = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.buku'])
+        $riwayatSirkulasi = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.eksemplar.buku'])
             ->whereBetween('tanggal_kembali', [$startDate, $endDate])
             ->orderBy('tanggal_kembali', 'desc')
             ->get();
@@ -39,8 +39,9 @@ class LaporanController extends Controller
         // 4. Statistik Populer
         // Top 5 Buku
         $topBuku = DB::table('detail_peminjaman')
-            ->join('buku', 'detail_peminjaman.id_buku', '=', 'buku.id_buku')
-            ->select('buku.judul_buku', 'buku.penulis', 'buku.cover_buku', DB::raw('count(detail_peminjaman.id_buku) as total_dipinjam'))
+            ->join('eksemplars', 'detail_peminjaman.id_eksemplar', '=', 'eksemplars.id_eksemplar')
+            ->join('buku', 'eksemplars.id_buku', '=', 'buku.id_buku')
+            ->select('buku.judul_buku', 'buku.penulis', 'buku.cover_buku', DB::raw('count(detail_peminjaman.id_eksemplar) as total_dipinjam'))
             ->groupBy('buku.id_buku', 'buku.judul_buku', 'buku.penulis', 'buku.cover_buku')
             ->orderByDesc('total_dipinjam')
             ->limit(5)
@@ -86,7 +87,7 @@ class LaporanController extends Controller
         $jenis = $request->input('jenis', 'sirkulasi'); // sirkulasi, kunjungan, koleksi
 
         if ($jenis == 'sirkulasi') {
-            $data = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.buku'])
+            $data = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.eksemplar.buku'])
                 ->whereBetween('tanggal_kembali', [$startDate, $endDate])
                 ->orderBy('tanggal_kembali', 'asc')
                 ->get();

@@ -154,17 +154,21 @@
     </section>
 
     <!-- Katalog Buku Section -->
-    <section id="katalog" class="py-24 bg-white relative">
+    <section id="katalog" class="py-24 bg-white relative" x-data="{ showModal: false, activeBook: {} }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div class="max-w-2xl">
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-4">Katalog Buku Terbaru</h2>
-                    <p class="text-slate-600 text-lg">Temukan koleksi buku terbaru yang siap menemani waktu membaca Anda hari ini.</p>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-4">Katalog Buku</h2>
+                    <p class="text-slate-600 text-lg">Cari dan temukan koleksi buku yang tersedia di perpustakaan.</p>
                 </div>
-                <!-- Search bar placeholder -->
-                <div class="relative w-full md:w-72">
-                    <input type="text" placeholder="Cari buku..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all">
-                    <svg class="absolute left-3 top-3.5 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <!-- Search bar -->
+                <div class="relative w-full md:w-80">
+                    <form action="{{ url('/#katalog') }}" method="GET">
+                        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari judul, penulis, penerbit..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all">
+                        <button type="submit" class="absolute left-3 top-3.5 text-slate-400 hover:text-primary-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -175,17 +179,34 @@
                             // Generate deterministic gradient class based on iteration
                             $gradientClass = 'book-gradient-' . (($index % 8) + 1);
                         @endphp
-                        <div class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col h-full cursor-pointer">
-                            <!-- Book Cover Mockup -->
-                            <div class="w-full aspect-[3/4] {{ $gradientClass }} relative flex items-center justify-center p-6 overflow-hidden">
-                                <!-- Subtle book spine effect -->
-                                <div class="absolute left-0 top-0 bottom-0 w-3 bg-black/10"></div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                                
-                                <div class="relative z-10 text-center">
-                                    <h3 class="text-white font-display font-bold text-xl drop-shadow-md leading-snug line-clamp-3">{{ $buku->judul_buku }}</h3>
-                                    <p class="text-white/80 text-sm mt-2 font-medium drop-shadow-sm">{{ $buku->penulis }}</p>
-                                </div>
+                        <div @click="activeBook = JSON.parse($el.dataset.book); showModal = true" 
+                             data-book="{{ json_encode([
+                                'judul' => $buku->judul_buku,
+                                'penulis' => $buku->penulis,
+                                'penerbit' => $buku->penerbit,
+                                'tahun' => $buku->tahun_terbit,
+                                'isbn' => $buku->isbn_issn ?? '-',
+                                'tersedia' => $buku->jumlah_tersedia,
+                                'total' => $buku->jumlah_total,
+                                'kategori' => $buku->klasifikasi_ddc ?? 'Umum',
+                                'gradient' => $gradientClass,
+                                'cover' => $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : null
+                             ]) }}"
+                             class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col h-full cursor-pointer">
+                            <!-- Book Cover Mockup / Real Cover -->
+                            <div class="w-full aspect-[3/4] {{ $gradientClass }} relative flex items-center justify-center overflow-hidden">
+                                @if($buku->cover_buku)
+                                    <img src="{{ asset('storage/' . $buku->cover_buku) }}" alt="{{ $buku->judul_buku }}" class="w-full h-full object-cover">
+                                @else
+                                    <!-- Subtle book spine effect -->
+                                    <div class="absolute left-0 top-0 bottom-0 w-3 bg-black/10"></div>
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                                    
+                                    <div class="relative z-10 text-center p-6">
+                                        <h3 class="text-white font-display font-bold text-xl drop-shadow-md leading-snug line-clamp-3">{{ $buku->judul_buku }}</h3>
+                                        <p class="text-white/80 text-sm mt-2 font-medium drop-shadow-sm">{{ $buku->penulis }}</p>
+                                    </div>
+                                @endif
                                 
                                 <!-- Category Badge -->
                                 <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-semibold tracking-wide border border-white/30">
@@ -227,11 +248,95 @@
                 </div>
             @endif
 
-            <div class="mt-16 text-center">
-                <a href="#" class="inline-flex items-center justify-center px-8 py-3.5 border-2 border-slate-200 hover:border-primary-500 text-slate-700 hover:text-primary-600 rounded-full font-bold transition-all bg-white hover:shadow-lg hover:shadow-primary-500/10">
-                    Lihat Semua Koleksi
-                </a>
+            <div class="mt-12">
+                {{ $bukus->appends(request()->query())->links() }}
             </div>
+            
+            @if(request('q'))
+                <div class="mt-4 text-center">
+                    <a href="{{ url('/#katalog') }}" class="text-sm font-medium text-primary-600 hover:underline">Reset Pencarian</a>
+                </div>
+            @endif
+
+            <!-- Modal Alpine.js -->
+            <div x-show="showModal" 
+                 x-transition.opacity
+                 class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4" 
+                 style="display: none;">
+                 
+                <div @click.outside="showModal = false" 
+                     x-show="showModal" 
+                     x-transition.scale.origin.bottom
+                     class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl overflow-hidden relative flex flex-col md:flex-row">
+                    
+                    <!-- Close button -->
+                    <button @click="showModal = false" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/10 hover:bg-black/30 backdrop-blur-md text-white md:text-slate-800 md:bg-white/50 md:hover:bg-white rounded-full flex items-center justify-center transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+
+                    <!-- Left: Cover -->
+                    <div :class="activeBook.gradient" class="w-full md:w-2/5 min-h-[250px] flex items-center justify-center relative overflow-hidden">
+                        <template x-if="activeBook.cover">
+                            <img :src="activeBook.cover" :alt="activeBook.judul" class="w-full h-full object-cover">
+                        </template>
+                        <template x-if="!activeBook.cover">
+                            <div class="w-full h-full relative p-8 flex flex-col items-center justify-center">
+                                <div class="absolute left-0 top-0 bottom-0 w-3 bg-black/10"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                                <div class="relative z-10 text-center text-white">
+                                    <h3 x-text="activeBook.judul" class="font-display font-bold text-2xl drop-shadow-md leading-tight mb-2"></h3>
+                                    <p x-text="activeBook.penulis" class="text-white/80 font-medium drop-shadow-sm"></p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Right: Info -->
+                    <div class="w-full md:w-3/5 p-8 flex flex-col bg-white">
+                        <div class="mb-6">
+                            <span x-text="activeBook.kategori" class="inline-block px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-xs font-bold mb-3 tracking-wide"></span>
+                            <h3 x-text="activeBook.judul" class="text-2xl font-display font-bold text-slate-900 mb-1 leading-tight"></h3>
+                            <p class="text-slate-500 font-medium">Karya <span x-text="activeBook.penulis" class="text-slate-700"></span></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                                <span class="block text-xs text-slate-400 font-semibold uppercase mb-1">Penerbit</span>
+                                <span x-text="activeBook.penerbit" class="block text-sm font-bold text-slate-800"></span>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                                <span class="block text-xs text-slate-400 font-semibold uppercase mb-1">Tahun Terbit</span>
+                                <span x-text="activeBook.tahun" class="block text-sm font-bold text-slate-800"></span>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 col-span-2">
+                                <span class="block text-xs text-slate-400 font-semibold uppercase mb-1">ISBN</span>
+                                <span x-text="activeBook.isbn" class="block text-sm font-bold text-slate-800"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto border-t border-slate-100 pt-6 flex items-center justify-between">
+                            <div>
+                                <span class="block text-sm text-slate-500 mb-1">Status Ketersediaan</span>
+                                <div class="flex items-center gap-2">
+                                    <template x-if="activeBook.tersedia > 0">
+                                        <div class="flex items-center gap-2">
+                                            <span class="flex h-3 w-3 rounded-full bg-emerald-500 shadow-sm"></span>
+                                            <span class="font-bold text-emerald-600 text-lg"><span x-text="activeBook.tersedia"></span> dari <span x-text="activeBook.total"></span> Buku</span>
+                                        </div>
+                                    </template>
+                                    <template x-if="activeBook.tersedia == 0">
+                                        <div class="flex items-center gap-2">
+                                            <span class="flex h-3 w-3 rounded-full bg-rose-500 shadow-sm"></span>
+                                            <span class="font-bold text-rose-600 text-lg">Semua Dipinjam</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </section>
 

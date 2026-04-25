@@ -7,11 +7,21 @@ use App\Models\Buku;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch 8 latest books for the catalog
-        $bukus = Buku::latest('id_buku')->take(8)->get();
+        $search = $request->input('q');
         
-        return view('welcome', compact('bukus'));
+        $query = Buku::query();
+
+        if ($search) {
+            $query->where('judul_buku', 'like', "%{$search}%")
+                  ->orWhere('penulis', 'like', "%{$search}%")
+                  ->orWhere('penerbit', 'like', "%{$search}%");
+        }
+
+        // Fetch paginated books for the catalog (12 per page)
+        $bukus = $query->latest('id_buku')->paginate(12)->withQueryString();
+        
+        return view('welcome', compact('bukus', 'search'));
     }
 }
