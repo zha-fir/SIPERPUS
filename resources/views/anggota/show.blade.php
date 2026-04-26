@@ -28,8 +28,8 @@
                 <div class="px-6 pb-6 relative">
                     <!-- Avatar -->
                     <div class="w-24 h-24 bg-white rounded-2xl shadow-lg border-4 border-white mx-auto -mt-12 flex items-center justify-center text-primary text-4xl font-black mb-4 overflow-hidden relative group">
-                        @if($anggota->foto_profil)
-                            <img src="{{ asset('storage/' . $anggota->foto_profil) }}" alt="Foto" class="w-full h-full object-cover">
+                        @if($anggota->foto)
+                            <img src="{{ asset('storage/' . $anggota->foto) }}" alt="Foto {{ $anggota->nama_lengkap }}" class="w-full h-full object-cover">
                         @else
                             {{ substr($anggota->nama_lengkap, 0, 1) }}
                         @endif
@@ -138,7 +138,7 @@
                                     <ul class="space-y-1">
                                         @foreach($p->detailPeminjamans as $detail)
                                             <li class="flex items-start gap-1.5 text-sm text-slate-700">
-                                                <span>{{ $detail->buku->judul_buku ?? '-' }}</span>
+                                                <span>{{ $detail->eksemplar->buku->judul_buku ?? '-' }}</span>
                                                 @if($detail->status == 'dikembalikan')
                                                     <span class="text-[10px] text-emerald-500 font-bold" title="Sudah dikembalikan">✓</span>
                                                 @endif

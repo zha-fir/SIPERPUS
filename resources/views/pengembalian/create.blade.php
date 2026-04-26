@@ -50,7 +50,13 @@
                 <div class="h-24 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
                 <div class="px-6 pb-6 relative">
                     <div class="w-20 h-20 bg-white rounded-2xl shadow-md border-4 border-white mx-auto -mt-10 flex items-center justify-center text-emerald-600 text-2xl font-black mb-3 overflow-hidden">
-                        <span x-text="memberData ? memberData.nama.charAt(0).toUpperCase() : ''"></span>
+                        <!-- Foto Profil Anggota -->
+                        <template x-if="memberData && memberData.foto">
+                            <img :src="memberData.foto" :alt="memberData.nama" class="w-full h-full object-cover">
+                        </template>
+                        <template x-if="!memberData || !memberData.foto">
+                            <span x-text="memberData ? memberData.nama.charAt(0).toUpperCase() : ''"></span>
+                        </template>
                     </div>
                     
                     <div class="text-center mb-6">

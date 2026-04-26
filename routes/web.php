@@ -10,9 +10,13 @@ use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\OpacController;
 
 // Public Home Route
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Public OPAC / Katalog Buku
+Route::get('/katalog', [OpacController::class, 'index'])->name('katalog.index');
 
 // Temporary route to setup admin if seeder failed
 Route::get('/setup-admin', function () {

@@ -87,8 +87,8 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#beranda" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Beranda</a>
-                    <a href="#katalog" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Katalog Buku</a>
                     <a href="#tentang" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Tentang Kami</a>
+                    <a href="{{ route('katalog.index') }}" class="text-sm font-semibold text-slate-600 hover:text-primary-600 transition-colors">Katalog Buku</a>
                     <a href="{{ route('helpdesk.create') }}" class="text-sm font-semibold text-accent-600 hover:text-accent-700 transition-colors">Pusat Bantuan</a>
                     <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold text-white transition-all bg-slate-900 rounded-full hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 hover:-translate-y-0.5">
                         Login Admin
@@ -111,8 +111,8 @@
         <div x-show="mobileMenuOpen" class="md:hidden glass-nav absolute w-full border-b border-slate-200" style="display: none;">
             <div class="px-4 pt-2 pb-6 space-y-1">
                 <a href="#beranda" @click="mobileMenuOpen = false" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Beranda</a>
-                <a href="#katalog" @click="mobileMenuOpen = false" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Katalog Buku</a>
                 <a href="#tentang" @click="mobileMenuOpen = false" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Tentang Kami</a>
+                <a href="{{ route('katalog.index') }}" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50">Katalog Buku</a>
                 <a href="{{ route('helpdesk.create') }}" class="block px-3 py-3 rounded-md text-base font-medium text-accent-600 hover:text-accent-700 hover:bg-slate-50">Pusat Bantuan</a>
                 <a href="{{ route('dashboard') }}" class="block px-3 py-3 mt-4 text-center rounded-lg text-base font-bold text-white bg-slate-900">Login Admin</a>
             </div>
@@ -143,7 +143,7 @@
             </p>
             
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#katalog" class="w-full sm:w-auto px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-bold text-lg transition-all shadow-xl shadow-primary-500/30 hover:-translate-y-1">
+                <a href="{{ route('katalog.index') }}" class="w-full sm:w-auto px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-bold text-lg transition-all shadow-xl shadow-primary-500/30 hover:-translate-y-1">
                     Lihat Katalog Buku
                 </a>
                 <a href="#tentang" class="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-full font-bold text-lg transition-all">
@@ -153,190 +153,69 @@
         </div>
     </section>
 
-    <!-- Katalog Buku Section -->
-    <section id="katalog" class="py-24 bg-white relative" x-data="{ showModal: false, activeBook: {} }">
+    <!-- Visi & Misi Section -->
+    <section id="visi-misi" class="py-24 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div class="max-w-2xl">
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-4">Katalog Buku</h2>
-                    <p class="text-slate-600 text-lg">Cari dan temukan koleksi buku yang tersedia di perpustakaan.</p>
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-100 text-primary-600 font-medium text-sm mb-6">
+                    <span class="flex h-2 w-2 rounded-full bg-primary-500"></span>
+                    Arah & Tujuan
                 </div>
-                <!-- Search bar -->
-                <div class="relative w-full md:w-80">
-                    <form action="{{ url('/#katalog') }}" method="GET">
-                        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari judul, penulis, penerbit..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all">
-                        <button type="submit" class="absolute left-3 top-3.5 text-slate-400 hover:text-primary-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </button>
-                    </form>
-                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-6 leading-tight">
+                    Visi & Misi <span class="text-primary-600">Perpustakaan</span>
+                </h2>
+                <p class="text-slate-600 text-lg">Mewujudkan layanan literasi terbaik berbasis teknologi untuk seluruh warga SMA Negeri 1 Suwawa.</p>
             </div>
 
-            @if($bukus->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    @foreach($bukus as $index => $buku)
-                        @php
-                            // Generate deterministic gradient class based on iteration
-                            $gradientClass = 'book-gradient-' . (($index % 8) + 1);
-                        @endphp
-                        <div @click="activeBook = JSON.parse($el.dataset.book); showModal = true" 
-                             data-book="{{ json_encode([
-                                'judul' => $buku->judul_buku,
-                                'penulis' => $buku->penulis,
-                                'penerbit' => $buku->penerbit,
-                                'tahun' => $buku->tahun_terbit,
-                                'isbn' => $buku->isbn_issn ?? '-',
-                                'tersedia' => $buku->jumlah_tersedia,
-                                'total' => $buku->jumlah_total,
-                                'kategori' => $buku->klasifikasi_ddc ?? 'Umum',
-                                'gradient' => $gradientClass,
-                                'cover' => $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : null
-                             ]) }}"
-                             class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col h-full cursor-pointer">
-                            <!-- Book Cover Mockup / Real Cover -->
-                            <div class="w-full aspect-[3/4] {{ $gradientClass }} relative flex items-center justify-center overflow-hidden">
-                                @if($buku->cover_buku)
-                                    <img src="{{ asset('storage/' . $buku->cover_buku) }}" alt="{{ $buku->judul_buku }}" class="w-full h-full object-cover">
-                                @else
-                                    <!-- Subtle book spine effect -->
-                                    <div class="absolute left-0 top-0 bottom-0 w-3 bg-black/10"></div>
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                                    
-                                    <div class="relative z-10 text-center p-6">
-                                        <h3 class="text-white font-display font-bold text-xl drop-shadow-md leading-snug line-clamp-3">{{ $buku->judul_buku }}</h3>
-                                        <p class="text-white/80 text-sm mt-2 font-medium drop-shadow-sm">{{ $buku->penulis }}</p>
-                                    </div>
-                                @endif
-                                
-                                <!-- Category Badge -->
-                                <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-semibold tracking-wide border border-white/30">
-                                    {{ $buku->klasifikasi_ddc ?? 'Umum' }}
-                                </div>
-                            </div>
-                            
-                            <!-- Card Content -->
-                            <div class="p-6 flex-1 flex flex-col">
-                                <h4 class="font-bold text-slate-900 text-lg mb-1 line-clamp-2 group-hover:text-primary-600 transition-colors">{{ $buku->judul_buku }}</h4>
-                                <p class="text-slate-500 text-sm mb-4">{{ $buku->penulis }} &middot; {{ $buku->tahun_terbit }}</p>
-                                
-                                <div class="mt-auto flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        @if($buku->jumlah_tersedia > 0)
-                                            <span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-                                            <span class="text-sm font-semibold text-emerald-600">Tersedia ({{ $buku->jumlah_tersedia }})</span>
-                                        @else
-                                            <span class="flex h-2.5 w-2.5 rounded-full bg-rose-500"></span>
-                                            <span class="text-sm font-semibold text-rose-600">Dipinjam</span>
-                                        @endif
-                                    </div>
-                                    <button class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary-50 group-hover:text-primary-600 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <!-- Empty State -->
-                <div class="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-300">
-                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-1">Belum Ada Buku</h3>
-                    <p class="text-slate-500">Katalog buku saat ini masih kosong.</p>
-                </div>
-            @endif
-
-            <div class="mt-12">
-                {{ $bukus->appends(request()->query())->links() }}
-            </div>
-            
-            @if(request('q'))
-                <div class="mt-4 text-center">
-                    <a href="{{ url('/#katalog') }}" class="text-sm font-medium text-primary-600 hover:underline">Reset Pencarian</a>
-                </div>
-            @endif
-
-            <!-- Modal Alpine.js -->
-            <div x-show="showModal" 
-                 x-transition.opacity
-                 class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4" 
-                 style="display: none;">
-                 
-                <div @click.outside="showModal = false" 
-                     x-show="showModal" 
-                     x-transition.scale.origin.bottom
-                     class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl overflow-hidden relative flex flex-col md:flex-row">
+            <div class="grid lg:grid-cols-5 gap-8 items-stretch">
+                <!-- Visi Card -->
+                <div class="lg:col-span-2 bg-gradient-to-br from-primary-600 to-emerald-700 rounded-3xl p-8 md:p-10 text-white shadow-xl shadow-primary-900/20 relative overflow-hidden flex flex-col justify-center">
+                    <div class="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 rounded-full bg-white/10 blur-2xl"></div>
+                    <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-40 h-40 rounded-full bg-black/10 blur-2xl"></div>
                     
-                    <!-- Close button -->
-                    <button @click="showModal = false" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/10 hover:bg-black/30 backdrop-blur-md text-white md:text-slate-800 md:bg-white/50 md:hover:bg-white rounded-full flex items-center justify-center transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-
-                    <!-- Left: Cover -->
-                    <div :class="activeBook.gradient" class="w-full md:w-2/5 min-h-[250px] flex items-center justify-center relative overflow-hidden">
-                        <template x-if="activeBook.cover">
-                            <img :src="activeBook.cover" :alt="activeBook.judul" class="w-full h-full object-cover">
-                        </template>
-                        <template x-if="!activeBook.cover">
-                            <div class="w-full h-full relative p-8 flex flex-col items-center justify-center">
-                                <div class="absolute left-0 top-0 bottom-0 w-3 bg-black/10"></div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                                <div class="relative z-10 text-center text-white">
-                                    <h3 x-text="activeBook.judul" class="font-display font-bold text-2xl drop-shadow-md leading-tight mb-2"></h3>
-                                    <p x-text="activeBook.penulis" class="text-white/80 font-medium drop-shadow-sm"></p>
-                                </div>
-                            </div>
-                        </template>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold mb-4">Visi Kami</h3>
+                        <p class="text-lg text-primary-50 leading-relaxed font-medium">
+                            Terwujudnya perpustakaan SMA Negeri 1 Suwawa sebagai pusat menjelajah informasi dan layanan pembelajaran literasi yang berbasis ICT (Information and Communication Technology).
+                        </p>
                     </div>
+                </div>
 
-                    <!-- Right: Info -->
-                    <div class="w-full md:w-3/5 p-8 flex flex-col bg-white">
-                        <div class="mb-6">
-                            <span x-text="activeBook.kategori" class="inline-block px-3 py-1 rounded-full bg-primary-50 text-primary-600 text-xs font-bold mb-3 tracking-wide"></span>
-                            <h3 x-text="activeBook.judul" class="text-2xl font-display font-bold text-slate-900 mb-1 leading-tight"></h3>
-                            <p class="text-slate-500 font-medium">Karya <span x-text="activeBook.penulis" class="text-slate-700"></span></p>
+                <!-- Misi Cards -->
+                <div class="lg:col-span-3 grid sm:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:border-primary-100 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary-600 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                            <span class="font-display font-bold text-xl">01</span>
                         </div>
-
-                        <div class="grid grid-cols-2 gap-4 mb-8">
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                                <span class="block text-xs text-slate-400 font-semibold uppercase mb-1">Penerbit</span>
-                                <span x-text="activeBook.penerbit" class="block text-sm font-bold text-slate-800"></span>
-                            </div>
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                                <span class="block text-xs text-slate-400 font-semibold uppercase mb-1">Tahun Terbit</span>
-                                <span x-text="activeBook.tahun" class="block text-sm font-bold text-slate-800"></span>
-                            </div>
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 col-span-2">
-                                <span class="block text-xs text-slate-400 font-semibold uppercase mb-1">ISBN</span>
-                                <span x-text="activeBook.isbn" class="block text-sm font-bold text-slate-800"></span>
-                            </div>
+                        <h4 class="font-bold text-slate-900 text-lg mb-2">Pengembangan SDM</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Pengembangan organisasi dan sumber daya manusia secara berkelanjutan.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:border-primary-100 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary-600 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                            <span class="font-display font-bold text-xl">02</span>
                         </div>
-
-                        <div class="mt-auto border-t border-slate-100 pt-6 flex items-center justify-between">
-                            <div>
-                                <span class="block text-sm text-slate-500 mb-1">Status Ketersediaan</span>
-                                <div class="flex items-center gap-2">
-                                    <template x-if="activeBook.tersedia > 0">
-                                        <div class="flex items-center gap-2">
-                                            <span class="flex h-3 w-3 rounded-full bg-emerald-500 shadow-sm"></span>
-                                            <span class="font-bold text-emerald-600 text-lg"><span x-text="activeBook.tersedia"></span> dari <span x-text="activeBook.total"></span> Buku</span>
-                                        </div>
-                                    </template>
-                                    <template x-if="activeBook.tersedia == 0">
-                                        <div class="flex items-center gap-2">
-                                            <span class="flex h-3 w-3 rounded-full bg-rose-500 shadow-sm"></span>
-                                            <span class="font-bold text-rose-600 text-lg">Semua Dipinjam</span>
-                                        </div>
-                                    </template>
-                                </div>
-                            </div>
+                        <h4 class="font-bold text-slate-900 text-lg mb-2">Layanan Terautomasi</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Melaksanakan layanan perpustakaan yang sepenuhnya terautomasi berbasis teknologi digital.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:border-primary-100 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary-600 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                            <span class="font-display font-bold text-xl">03</span>
                         </div>
+                        <h4 class="font-bold text-slate-900 text-lg mb-2">Layanan Prima</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Melayani semua warga sekolah dengan standar layanan prima dan responsif.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-lg hover:border-primary-100 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary-600 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                            <span class="font-display font-bold text-xl">04</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-lg mb-2">Wadah Literasi</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Menerapkan perpustakaan sebagai wadah berkegiatan siswa dalam memahami literasi.</p>
                     </div>
                 </div>
             </div>
-            
         </div>
     </section>
 
@@ -420,6 +299,172 @@
         </div>
     </section>
 
+    <!-- SOP Layanan Pembaca Section -->
+    <section id="sop-layanan" class="py-24 bg-white relative border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-50 border border-accent-100 text-accent-600 font-medium text-sm mb-6">
+                    <span class="flex h-2 w-2 rounded-full bg-accent-500"></span>
+                    Panduan
+                </div>
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-6 leading-tight">
+                    Alur Layanan <span class="text-accent-600">Pembaca</span>
+                </h2>
+                <p class="text-slate-600 text-lg">Langkah-langkah mudah memanfaatkan fasilitas perpustakaan SMA Negeri 1 Suwawa.</p>
+            </div>
+
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-slate-100 rounded-full"></div>
+                
+                <div class="space-y-12">
+                    <!-- Step 1 & 2 -->
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-16">
+                        <div class="md:text-right relative flex flex-col md:items-end group">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">01</div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:border-primary-200 group-hover:shadow-lg transition-all w-full max-w-md">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2">Simpan Barang Bawaan</h4>
+                                <p class="text-slate-600 text-sm">Pemustaka datang menuju loker untuk memasukkan tas, topi, jaket ke loker yang disediakan.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -right-8 transform translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-primary-100 text-primary-600 font-display font-bold text-lg items-center justify-center z-10 shadow-sm">01</div>
+                        </div>
+                        <div class="relative flex flex-col md:items-start group md:pt-16">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">02</div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:border-primary-200 group-hover:shadow-lg transition-all w-full max-w-md">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2">Isi Daftar Hadir</h4>
+                                <p class="text-slate-600 text-sm">Pemustaka mengisi kehadiran secara online melalui perangkat yang telah disediakan.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -left-8 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-primary-100 text-primary-600 font-display font-bold text-lg items-center justify-center z-10 shadow-sm mt-16">02</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 & 4 -->
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-16">
+                        <div class="md:text-right relative flex flex-col md:items-end group">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">03</div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:border-primary-200 group-hover:shadow-lg transition-all w-full max-w-md">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2">Penelusuran OPAC</h4>
+                                <p class="text-slate-600 text-sm">Pemustaka mencari buku langsung ke rak dengan penelusuran melalui <a href="{{ route('katalog.index') }}" class="text-primary-600 font-semibold hover:underline">Katalog OPAC</a>.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -right-8 transform translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-primary-100 text-primary-600 font-display font-bold text-lg items-center justify-center z-10 shadow-sm">03</div>
+                        </div>
+                        <div class="relative flex flex-col md:items-start group md:pt-16">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">04</div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:border-primary-200 group-hover:shadow-lg transition-all w-full max-w-md">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2">Lapor & Cari Buku</h4>
+                                <p class="text-slate-600 text-sm">Pemustaka lapor kepada petugas atau langsung menuju ke rak sesuai nomor klasifikasi DDC.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -left-8 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-primary-100 text-primary-600 font-display font-bold text-lg items-center justify-center z-10 shadow-sm mt-16">04</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 & 6 -->
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-16">
+                        <div class="md:text-right relative flex flex-col md:items-end group">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">05</div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:border-primary-200 group-hover:shadow-lg transition-all w-full max-w-md">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2">Membaca Buku</h4>
+                                <p class="text-slate-600 text-sm">Setelah mendapatkan buku, pemustaka bisa membaca di tempat yang sudah disediakan.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -right-8 transform translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-primary-100 text-primary-600 font-display font-bold text-lg items-center justify-center z-10 shadow-sm">05</div>
+                        </div>
+                        <div class="relative flex flex-col md:items-start group md:pt-16">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">06</div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:border-primary-200 group-hover:shadow-lg transition-all w-full max-w-md">
+                                <h4 class="font-bold text-slate-900 text-lg mb-2">Pengembalian Bacaan</h4>
+                                <p class="text-slate-600 text-sm">Buku yang habis dibaca dikembalikan di tempat semula atau diserahkan ke petugas.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -left-8 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-primary-100 text-primary-600 font-display font-bold text-lg items-center justify-center z-10 shadow-sm mt-16">06</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 7 -->
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-16">
+                        <div class="md:text-right relative flex flex-col md:items-end group">
+                            <div class="md:hidden w-12 h-12 rounded-full bg-primary-100 text-primary-600 font-display font-bold text-xl flex items-center justify-center mb-4">07</div>
+                            <div class="bg-primary-600 p-6 rounded-2xl shadow-xl shadow-primary-500/20 text-white w-full max-w-md relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-xl -mr-10 -mt-10"></div>
+                                <h4 class="font-bold text-white text-lg mb-2 relative z-10">Peminjaman Buku Keluar</h4>
+                                <p class="text-primary-50 text-sm relative z-10">Apabila pemustaka akan meminjam bukunya, pemustaka menuju ke petugas layanan sirkulasi untuk proses peminjaman menggunakan Kartu Anggota.</p>
+                            </div>
+                            <div class="hidden md:flex absolute top-1/2 -right-8 transform translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-600 text-white font-display font-bold text-lg items-center justify-center z-10 shadow-md border-4 border-white">07</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tata Tertib Section -->
+    <section id="tata-tertib" class="py-24 bg-slate-900 relative text-slate-300">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M0 40L40 0H20L0 20M40 40V20L20 40" stroke="currentColor" stroke-width="1" fill="none"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern)"></rect>
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6 leading-tight">
+                    Tata Tertib <span class="text-primary-500">Perpustakaan</span>
+                </h2>
+                <p class="text-slate-400 text-lg">Ketentuan yang harus ditaati demi kenyamanan dan kelancaran layanan perpustakaan bersama.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Keanggotaan -->
+                <div class="bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-slate-600 transition-colors">
+                    <div class="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center text-white mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Keanggotaan</h3>
+                    <p class="text-sm mb-4">Yang berhak menjadi anggota perpustakaan adalah:</p>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500"></div> Peserta Didik</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500"></div> Guru</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500"></div> Tenaga Kependidikan</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500"></div> Wali Kelas</li>
+                    </ul>
+                </div>
+
+                <!-- Ketentuan Peminjaman -->
+                <div class="bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-slate-600 transition-colors">
+                    <div class="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center text-white mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Ketentuan Peminjaman</h3>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500 mt-1.5 shrink-0"></div> Jumlah pinjaman maksimal 3 (Tiga) buah.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500 mt-1.5 shrink-0"></div> Batas waktu peminjaman paling lambat 3 (Tiga) hari.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500 mt-1.5 shrink-0"></div> Bertanggung jawab atas buku yang dipinjam.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500 mt-1.5 shrink-0"></div> Buku referensi hanya boleh dibaca di tempat.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-primary-500 mt-1.5 shrink-0"></div> Harus menggunakan Kartu Perpustakaan/Pelajar.</li>
+                    </ul>
+                </div>
+
+                <!-- Sanksi & Denda -->
+                <div class="bg-slate-800 rounded-3xl p-8 border border-slate-700 hover:border-slate-600 transition-colors">
+                    <div class="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center text-rose-500 mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Denda & Kerusakan</h3>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div> Keterlambatan pengembalian buku dikenakan denda sebesar <b>Rp 1.000</b> per hari per buku.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div> Buku yang hilang harus diganti dengan buku yang sama.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div> Kerusakan atau coretan yang disengaja dapat mengakibatkan gugurnya keanggotaan.</li>
+                        <li class="flex items-start gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div> Kartu Perpustakaan yang hilang/rusak dikenakan biaya penggantian <b>Rp 25.000</b>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-slate-950 pt-20 pb-10 border-t border-slate-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -449,8 +494,8 @@
                     <h4 class="text-white font-bold mb-6">Tautan Cepat</h4>
                     <ul class="space-y-4 text-sm text-slate-400">
                         <li><a href="#beranda" class="hover:text-primary-400 transition-colors">Beranda</a></li>
-                        <li><a href="#katalog" class="hover:text-primary-400 transition-colors">Katalog Buku</a></li>
                         <li><a href="#tentang" class="hover:text-primary-400 transition-colors">Tentang Kami</a></li>
+                        <li><a href="{{ route('katalog.index') }}" class="hover:text-primary-400 transition-colors">Katalog Buku</a></li>
                         <li><a href="{{ route('helpdesk.create') }}" class="hover:text-accent-400 transition-colors">Pusat Bantuan</a></li>
                         <li><a href="{{ route('dashboard') }}" class="hover:text-primary-400 transition-colors">Portal Admin</a></li>
                     </ul>

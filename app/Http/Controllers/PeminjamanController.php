@@ -42,7 +42,8 @@ class PeminjamanController extends Controller
                 'nama' => $anggota->nama_lengkap,
                 'kelas' => $anggota->kelas_atau_jabatan,
                 'status' => $anggota->status_anggota,
-                'barcode' => $anggota->barcode
+                'barcode' => $anggota->barcode,
+                'foto' => $anggota->foto ? asset('storage/' . $anggota->foto) : null
             ]
         ]);
     }

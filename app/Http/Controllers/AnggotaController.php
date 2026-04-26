@@ -54,7 +54,7 @@ class AnggotaController extends Controller
         
         // Ambil histori peminjaman
         $peminjamans = \App\Models\Peminjaman::where('id_anggota', $id)
-            ->with('detailPeminjamans.buku')
+            ->with('detailPeminjamans.eksemplar.buku')
             ->latest('tanggal_pinjam')
             ->get();
             
