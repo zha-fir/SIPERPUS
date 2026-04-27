@@ -164,7 +164,13 @@
             box-shadow: 0 4px 6px rgba(15, 58, 90, 0.15);
         }
 
-        /* Removed .photo-frame img since we use background-image now */
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
 
         .photo-placeholder {
             width: 100%;
@@ -454,7 +460,7 @@
                 <div class="photo-section">
                     <div class="photo-frame">
                         @if($a->foto)
-                            <div style="width: 100%; height: 100%; background-image: url('{{ asset('storage/' . $a->foto) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+                            <img src="{{ asset('storage/' . $a->foto) }}" alt="Foto {{ $a->nama_lengkap }}" crossorigin="anonymous">
                         @else
                             <div class="photo-placeholder">
                                 <svg style="width: 10mm; height: 10mm;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
@@ -564,7 +570,7 @@
                 margin:       0,
                 filename:     'kartu_anggota_siperpus.pdf',
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 4, useCORS: true, letterRendering: true, logging: false },
+                html2canvas:  { scale: 6, useCORS: true, allowTaint: false, letterRendering: true, logging: false },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             

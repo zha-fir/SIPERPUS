@@ -37,7 +37,7 @@
         
         <div class="p-8 relative z-10">
             <div class="text-center mb-8">
-                <img src="{{ asset('logo.png') }}" alt="Logo SMA N 1 Suwawa" class="w-16 h-16 mx-auto object-contain drop-shadow-md mb-4">
+                <img src="{{ asset('images/logo-perpus.png') }}" alt="Logo Perpustakaan SMA N 1 Suwawa" class="w-16 h-16 mx-auto object-contain drop-shadow-md mb-4">
                 <h2 class="text-2xl font-display font-bold text-slate-900 leading-tight">SMA NEGERI 1 SUWAWA</h2>
                 <p class="text-slate-500 text-sm mt-1">Silakan masuk ke panel admin SIPERPUS</p>
             </div>

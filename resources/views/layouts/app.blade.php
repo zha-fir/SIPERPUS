@@ -58,7 +58,7 @@
         <!-- Logo -->
         <div class="h-16 flex items-center px-4 border-b border-slate-700 bg-slate-950/50 shrink-0">
             <div class="flex items-center gap-3 flex-1">
-                <img src="{{ asset('logo.png') }}" alt="Logo SMA Negeri 1 Suwawa" class="w-10 h-10 object-contain drop-shadow-md">
+                <img src="{{ asset('images/logo-perpus.png') }}" alt="Logo Perpustakaan SMA Negeri 1 Suwawa" class="w-10 h-10 object-contain drop-shadow-md">
                 <div class="flex flex-col">
                     <span class="font-bold text-base tracking-wide leading-none text-white">SMA NEGERI 1</span>
                     <span class="text-[11px] text-slate-400 font-medium tracking-widest mt-1">SUWAWA</span>

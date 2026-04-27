@@ -40,7 +40,7 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <img src="{{ asset('logo.png') }}" alt="Logo SMA N 1 Suwawa" class="w-12 h-12 object-contain drop-shadow-md">
+                    <img src="{{ asset('images/logo-perpus.png') }}" alt="Logo Perpustakaan SMA N 1 Suwawa" class="w-12 h-12 object-contain drop-shadow-md">
                     <div class="flex flex-col">
                         <span class="font-display font-bold text-xl tracking-tight text-slate-900 leading-none">SMA NEGERI 1</span>
                         <span class="text-xs text-slate-500 font-semibold tracking-widest mt-1">SUWAWA</span>
