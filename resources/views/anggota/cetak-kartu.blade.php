@@ -88,8 +88,8 @@
         }
 
         .logo-box {
-            width: 13mm;
-            height: 13mm;
+            width: 15mm;
+            height: 15mm;
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -272,7 +272,7 @@
             color: var(--primary);
         }
         .sig-img {
-            height: 8.5mm;
+            height: 13mm;
             width: auto;
             max-width: 100%;
             margin: 0.5mm auto;
@@ -468,7 +468,7 @@
                     <div class="card-title">KARTU ANGGOTA</div>
                     <table class="biodata-table">
                         <tr>
-                            <td class="label-col">Nama Lengkap</td>
+                            <td class="label-col">Nama</td>
                             <td class="colon-col">:</td>
                             <td class="value-col">{{ $a->nama_lengkap }}</td>
                         </tr>
