@@ -23,6 +23,13 @@ class AnggotaController extends Controller
             'kelas_atau_jabatan' => 'nullable',
             'no_telepon' => 'nullable',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+        ], [
+            'nomor_identitas.unique' => 'Nomor Identitas (NIS/NIP) sudah terdaftar di sistem.',
+            'nomor_identitas.required' => 'Nomor Identitas wajib diisi.',
+            'nama_lengkap.required' => 'Nama Lengkap wajib diisi.',
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus berupa JPEG, PNG, JPG, atau WEBP.',
+            'foto.max' => 'Ukuran foto maksimal adalah 2MB.'
         ]);
 
         $fotoPath = null;
@@ -80,6 +87,13 @@ class AnggotaController extends Controller
             'no_telepon' => 'nullable',
             'status_anggota' => 'required|in:aktif,nonaktif,diblokir',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+        ], [
+            'nomor_identitas.unique' => 'Nomor Identitas (NIS/NIP) sudah terdaftar di sistem.',
+            'nomor_identitas.required' => 'Nomor Identitas wajib diisi.',
+            'nama_lengkap.required' => 'Nama Lengkap wajib diisi.',
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus berupa JPEG, PNG, JPG, atau WEBP.',
+            'foto.max' => 'Ukuran foto maksimal adalah 2MB.'
         ]);
 
         $data = [

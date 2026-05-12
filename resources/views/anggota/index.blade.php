@@ -138,7 +138,7 @@
 </div>
 
 <!-- Modal Tambah (Powered by AlpineJS) -->
-<div x-data="{ open: false }" @open-modal.window="open = true" x-show="open" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+<div x-data="{ open: {{ ($errors->any() && !old('_method')) ? 'true' : 'false' }} }" @open-modal.window="open = true" x-show="open" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
     <div class="flex items-end sm:items-center justify-center min-h-screen sm:px-4">
         <!-- Backdrop -->
         <div x-show="open" class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-sm" @click="open = false"></div>
@@ -167,27 +167,27 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Tipe Anggota <span class="text-red-500">*</span></label>
                             <select name="tipe_anggota" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
-                                <option value="Siswa">Siswa</option>
-                                <option value="Guru">Guru</option>
-                                <option value="Staf">Staf</option>
+                                <option value="Siswa" {{ old('tipe_anggota') == 'Siswa' ? 'selected' : '' }}>Siswa</option>
+                                <option value="Guru" {{ old('tipe_anggota') == 'Guru' ? 'selected' : '' }}>Guru</option>
+                                <option value="Staf" {{ old('tipe_anggota') == 'Staf' ? 'selected' : '' }}>Staf</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nomor Identitas (NIS/NIP) <span class="text-red-500">*</span></label>
-                            <input type="text" name="nomor_identitas" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <input type="text" name="nomor_identitas" value="{{ old('nomor_identitas') }}" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                            <input type="text" name="nama_lengkap" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
                             <select name="jenis_kelamin" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
+                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
                             </select>
                         </div>
                     </div>
@@ -195,11 +195,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Kelas / Jabatan</label>
-                            <input type="text" name="kelas_atau_jabatan" placeholder="Contoh: XII IPA 1 / Guru Matematika" class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <input type="text" name="kelas_atau_jabatan" value="{{ old('kelas_atau_jabatan') }}" placeholder="Contoh: XII IPA 1 / Guru Matematika" class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">No Telepon / WhatsApp</label>
-                            <input type="text" name="no_telepon" class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <input type="text" name="no_telepon" value="{{ old('no_telepon') }}" class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
                         </div>
                     </div>
 
