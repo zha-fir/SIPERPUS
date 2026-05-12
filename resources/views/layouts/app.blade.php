@@ -128,7 +128,9 @@
                     A
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-semibold truncate">Administrator</h4>
+                    <a href="{{ route('profile.index') }}" class="block hover:opacity-80 transition-opacity">
+                        <h4 class="text-sm font-semibold truncate hover:text-primary transition-colors" title="Klik untuk edit profil">{{ Auth::check() ? Auth::user()->name : 'Administrator' }}</h4>
+                    </a>
                     <span class="text-xs text-emerald-400 flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span> Online
                     </span>

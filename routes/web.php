@@ -20,13 +20,13 @@ Route::get('/katalog', [OpacController::class, 'index'])->name('katalog.index');
 
 // Temporary route to setup admin if seeder failed
 Route::get('/setup-admin', function () {
-    $user = \App\Models\User::firstOrNew(['email' => 'admin@siperpus.com']);
+    $user = \App\Models\User::firstOrNew(['email' => 'admin']);
     $user->name = 'Administrator';
     // Using Hash::make manually to ensure it works correctly regardless of cast bugs
     $user->password = \Illuminate\Support\Facades\Hash::make('password');
     $user->save();
     
-    return 'Akun admin berhasil dibuat paksa. Silakan ke <a href="/login">Halaman Login</a> dan gunakan email: admin@siperpus.com, password: password';
+    return 'Akun admin berhasil dibuat paksa. Silakan ke <a href="/login">Halaman Login</a> dan gunakan Username: admin, Password: password';
 });
 
 // Authentication Routes
@@ -47,6 +47,10 @@ Route::prefix('helpdesk')->group(function () {
 // Protected Admin Routes
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Profil Admin
+    Route::get('/profile', [\App\Http\Controllers\AdminProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [\App\Http\Controllers\AdminProfileController::class, 'update'])->name('profile.update');
     
     // Manajemen Insiden
     Route::get('/insiden', [\App\Http\Controllers\InsidenController::class, 'index'])->name('insiden.index');
