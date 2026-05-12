@@ -138,7 +138,10 @@
 </div>
 
 <!-- Modal Tambah (Powered by AlpineJS) -->
-<div x-data="{ open: {{ ($errors->any() && !old('_method')) ? 'true' : 'false' }} }" @open-modal.window="open = true" x-show="open" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+@php
+    $showAddModal = ($errors->any() && !old('_method')) ? 'true' : 'false';
+@endphp
+<div x-data="{ open: {{ $showAddModal }} }" @open-modal.window="open = true" x-show="open" class="fixed inset-0 z-50 overflow-y-auto" style="{{ $showAddModal == 'true' ? '' : 'display: none;' }}">
     <div class="flex items-end sm:items-center justify-center min-h-screen sm:px-4">
         <!-- Backdrop -->
         <div x-show="open" class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-sm" @click="open = false"></div>
@@ -159,8 +162,11 @@
                 <div class="p-5 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Pas Foto (Opsional)</label>
-                        <input type="file" name="foto" accept="image/*" class="w-full rounded-xl border border-slate-200 p-2 text-sm bg-white focus:border-primary focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                        <input type="file" name="foto" accept="image/*" class="w-full rounded-xl border {{ $errors->has('foto') ? 'border-red-500' : 'border-slate-200' }} p-2 text-sm bg-white focus:border-primary focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
                         <p class="text-[10px] text-slate-400 mt-1">Format: JPG, PNG, WEBP. Maks 2MB. Disarankan rasio 3:4.</p>
+                        @error('foto')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -174,14 +180,20 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nomor Identitas (NIS/NIP) <span class="text-red-500">*</span></label>
-                            <input type="text" name="nomor_identitas" value="{{ old('nomor_identitas') }}" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <input type="text" name="nomor_identitas" value="{{ old('nomor_identitas') }}" required class="w-full rounded-xl border {{ $errors->has('nomor_identitas') ? 'border-red-500' : 'border-slate-200' }} p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            @error('nomor_identitas')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required class="w-full rounded-xl border border-slate-200 p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required class="w-full rounded-xl border {{ $errors->has('nama_lengkap') ? 'border-red-500' : 'border-slate-200' }} p-2.5 bg-slate-50 focus:border-primary focus:ring-primary transition-all">
+                            @error('nama_lengkap')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
