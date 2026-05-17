@@ -13,10 +13,20 @@ use Illuminate\Support\Facades\DB;
 
 class PengembalianController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pengembalians = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.eksemplar.buku'])->latest()->get();
-        return view('pengembalian.index', compact('pengembalians'));
+        $search = $request->query('search');
+        $query = Pengembalian::with(['peminjaman.anggota', 'peminjaman.detailPeminjamans.eksemplar.buku']);
+
+        if ($search) {
+            $query->whereHas('peminjaman.anggota', function($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('barcode', 'like', "%{$search}%");
+            })->orWhere('id_peminjaman', 'like', "%{$search}%");
+        }
+
+        $pengembalians = $query->latest()->get();
+        return view('pengembalian.index', compact('pengembalians', 'search'));
     }
 
     public function create()

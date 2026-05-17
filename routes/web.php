@@ -48,9 +48,12 @@ Route::prefix('helpdesk')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Profil Admin
+    // Profil Admin (Kelola Akun Sendiri)
     Route::get('/profile', [\App\Http\Controllers\AdminProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [\App\Http\Controllers\AdminProfileController::class, 'update'])->name('profile.update');
+
+    // Manajemen Akun Admin (Tambah/Edit/Hapus Admin Lain)
+    Route::resource('admin-users', \App\Http\Controllers\AdminUserController::class)->except(['show']);
     
     // Manajemen Insiden
     Route::get('/insiden', [\App\Http\Controllers\InsidenController::class, 'index'])->name('insiden.index');
