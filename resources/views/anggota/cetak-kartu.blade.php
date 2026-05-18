@@ -33,16 +33,32 @@
             align-items: center;
         }
 
-        .page {
+        #print-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .page-wrapper {
             width: 210mm;
-            min-height: 297mm;
+            height: 296mm; /* Exactly A4 height */
             padding: 10mm;
-            background: transparent;
+            background: #ffffff;
             box-sizing: border-box;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10mm;
             align-content: flex-start;
+            page-break-after: always;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-wrapper:last-child {
+            page-break-after: auto;
         }
 
         /* CR80 Standard Size */
@@ -411,14 +427,15 @@
         @media print {
             body { background: none; padding: 0; }
             .action-buttons { display: none; }
-            .page { box-shadow: none; margin: 0; width: auto; min-height: auto; gap: 4mm; }
+            #print-container { gap: 0; }
+            .page-wrapper { box-shadow: none; margin: 0; border: none; background: none; page-break-after: always; }
             .id-card { 
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact; 
                 box-shadow: none; 
                 border: 0.1mm solid #cbd5e1; 
             }
-            @page { size: A4; margin: 5mm; }
+            @page { size: A4 portrait; margin: 0; }
         }
     </style>
 </head>
@@ -428,10 +445,12 @@
         <button class="btn" onclick="window.print()">🖨️ Cetak Langsung</button>
     </div>
 
-    <div class="page">
-        @foreach($anggotas as $a)
-        
-        <!-- ======================= KARTU DEPAN ======================= -->
+    <div id="print-container">
+        @foreach($anggotas->chunk(4) as $chunk)
+        <div class="page-wrapper">
+            @foreach($chunk as $a)
+            
+            <!-- ======================= KARTU DEPAN ======================= -->
         <div class="id-card">
             <div class="shape-1"></div>
             <div class="shape-2"></div>
@@ -553,6 +572,8 @@
             </div>
         </div>
 
+            @endforeach
+        </div>
         @endforeach
     </div>
 
@@ -565,13 +586,14 @@
         });
 
         function downloadPDF() {
-            const element = document.querySelector('.page');
+            const element = document.getElementById('print-container');
             const opt = {
                 margin:       0,
                 filename:     'kartu_anggota_siperpus.pdf',
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 6, useCORS: true, allowTaint: false, letterRendering: true, logging: false },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                html2canvas:  { scale: 4, useCORS: true, allowTaint: false, letterRendering: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['css', 'legacy'] }
             };
             
             const dlBtn = document.querySelector('.btn-alt');

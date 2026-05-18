@@ -56,12 +56,14 @@ class PengembalianController extends Controller
         $sekarang = Carbon::now('Asia/Makassar')->startOfDay();
 
         foreach ($peminjamans as $p) {
-            $jatuhTempo = Carbon::parse($p->tanggal_jatuh_tempo, 'Asia/Makassar')->startOfDay();
+            $jatuhTempo = Carbon::parse($p->tanggal_jatuh_tempo)->timezone('Asia/Makassar')->startOfDay();
+            $sekarangCopy = Carbon::now('Asia/Makassar')->startOfDay();
+            
             $dendaPerBuku = 0;
             $hariTelat = 0;
             
-            if ($sekarang->gt($jatuhTempo)) {
-                $hariTelat = $sekarang->diffInDays($jatuhTempo);
+            if ($sekarangCopy->timestamp > $jatuhTempo->timestamp) {
+                $hariTelat = (int) floor(($sekarangCopy->timestamp - $jatuhTempo->timestamp) / 86400);
                 $dendaPerBuku = 1000 * $hariTelat;
             }
 
@@ -128,11 +130,12 @@ class PengembalianController extends Controller
 
                 if ($detail) {
                     $peminjaman = Peminjaman::find($detail->id_peminjaman);
-                    $tanggalJatuhTempo = Carbon::parse($peminjaman->tanggal_jatuh_tempo, 'Asia/Makassar');
+                    $tanggalJatuhTempo = Carbon::parse($peminjaman->tanggal_jatuh_tempo)->timezone('Asia/Makassar')->startOfDay();
+                    $tanggalKembaliCopy = Carbon::now('Asia/Makassar')->startOfDay();
                     
                     $dendaBukuIni = 0;
-                    if ($tanggalKembali->startOfDay()->gt($tanggalJatuhTempo->startOfDay())) {
-                        $selisihHari = $tanggalKembali->startOfDay()->diffInDays($tanggalJatuhTempo->startOfDay());
+                    if ($tanggalKembaliCopy->timestamp > $tanggalJatuhTempo->timestamp) {
+                        $selisihHari = (int) floor(($tanggalKembaliCopy->timestamp - $tanggalJatuhTempo->timestamp) / 86400);
                         $dendaBukuIni = 1000 * $selisihHari; // Denda Rp1.000 per hari per buku
                     }
 
